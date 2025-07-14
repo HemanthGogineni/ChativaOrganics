@@ -7,5 +7,4 @@ export const routes: Routes = [
     { path: 'products', component: ProductComponent },
 
   // optional fallback
-  { path: '**', redirectTo: '' }
 ];
