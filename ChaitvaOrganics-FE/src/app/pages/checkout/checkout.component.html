@@ -1,0 +1,22 @@
+<!-- Modal container -->
+<div class="modal fade" id="checkoutBagModal" tabindex="-1" aria-labelledby="checkoutBagModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-end modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="checkoutBagModalLabel">🛍️ Your Bag</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div *ngIf="items.length === 0">Your bag is empty.</div>
+                <ul *ngIf="items.length > 0">
+                    <li *ngFor="let item of items">
+                        {{ item.name }} - ${{ item.price }}
+                    </li>
+                </ul>
+                <div class="bag-total mt-2" *ngIf="items.length > 0">
+                    <strong>Total: ${{ total }}</strong>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

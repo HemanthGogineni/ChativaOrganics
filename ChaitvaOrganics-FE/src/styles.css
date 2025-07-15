@@ -6,6 +6,7 @@
 @import "assets/lib/animate/animate.css";
 @import "assets/lib/animate/animate.min.css";
 @import "assets/scss/bootstrap.scss";
+
 :root {
     --primary: #3CB815;
     --secondary: #F65005;
@@ -187,7 +188,7 @@
         position: relative;
         min-height: 450px;
     }
-    
+
     #header-carousel .carousel-item img {
         position: absolute;
         width: 100%;
@@ -199,7 +200,7 @@
 .page-header {
     padding-top: 12rem;
     padding-bottom: 6rem;
-    background: url(assets/img/carousel-1.jpg) top right no-repeat;
+    background: url(assets/img/img-3.png) top right no-repeat;
     background-size: cover;
 }
 
@@ -390,4 +391,3 @@
 .footer .copyright a:hover {
     color: var(--primary);
 }
-
