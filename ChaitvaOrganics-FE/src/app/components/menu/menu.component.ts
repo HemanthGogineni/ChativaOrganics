@@ -1,7 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { CheckoutComponent } from '../../pages/checkout/checkout.component';
+import { CartComponent } from '../../pages/cart/cart.component';
+import { CartService } from '../../pages/services/cart.service';
 
 
 declare var bootstrap: any; // if not using types for bootstrap
@@ -10,17 +11,16 @@ declare var bootstrap: any; // if not using types for bootstrap
   selector: 'app-menu',
   templateUrl: './menu.component.html',
   styleUrls: ['./menu.component.scss'],
-  imports: [CommonModule, RouterModule, CheckoutComponent]
+  imports: [CommonModule, RouterModule]
 })
 export class MenuComponent {
-  bagItems: any[] = [];
+  cartCount = 0;
 
-  openBagModal() {
-    const modalElement = document.getElementById('checkoutBagModal');
-    if (modalElement) {
-      const modal = new bootstrap.Modal(modalElement);
-      modal.show();
-    }
+  constructor(private cartService: CartService) { }
+
+  ngOnInit() {
+    this.cartService.cartItems$.subscribe(items => {
+      this.cartCount = items.reduce((sum, item) => sum + item.quantity, 0);
+    });
   }
-
 }
