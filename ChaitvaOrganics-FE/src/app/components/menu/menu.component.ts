@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { CartComponent } from '../../pages/cart/cart.component';
-import { CartService } from '../../pages/services/cart.service';
+import { CartService } from '../../pages/cart/cart.service';
 
 
 declare var bootstrap: any; // if not using types for bootstrap

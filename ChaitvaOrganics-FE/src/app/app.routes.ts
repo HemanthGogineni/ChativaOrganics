@@ -3,6 +3,7 @@ import { ProductComponent } from './pages/products/product.component';
 import { HomeComponent } from './pages/home/home.component';
 import { ContactComponent } from './pages/contact/contact.component';
 import { CartComponent } from './pages/cart/cart.component';
+import { CheckoutComponent } from './pages/checkout/checkout.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -10,6 +11,7 @@ export const routes: Routes = [
   { path: 'products', component: ProductComponent },
   { path: 'contact-us', component: ContactComponent },
   { path: 'cart', component: CartComponent },
+  { path: 'checkout', component: CheckoutComponent },
 
 
   // optional fallback

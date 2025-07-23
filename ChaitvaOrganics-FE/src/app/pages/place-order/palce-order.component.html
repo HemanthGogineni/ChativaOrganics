@@ -1,0 +1,11 @@
+<div *ngIf="showPaymentUI" class="payment-ui">
+    <h3>Pay via UPI</h3>
+
+    <div class="qr-section">
+        <img [src]="'data:image/png;base64,' + qrImageBase64" alt="UPI QR Code" />
+    </div>
+
+    <a [href]="upiLink" target="_blank" class="btn btn-outline-primary mt-2">
+        Pay Now via UPI App
+    </a>
+</div>

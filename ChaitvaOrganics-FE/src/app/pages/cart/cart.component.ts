@@ -1,13 +1,14 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
-import { CartService } from '../services/cart.service';
+import { CartService } from './cart.service';
 import { trigger, transition, style, animate } from '@angular/animations';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-cart',
   templateUrl: './cart.component.html',
   styleUrls: ['./cart.component.scss'],
-  imports: [CommonModule],
+  imports: [CommonModule, RouterModule],
   animations: [
     trigger('fadeIn', [
       transition(':enter', [
