@@ -4,6 +4,7 @@ import { HomeComponent } from './pages/home/home.component';
 import { ContactComponent } from './pages/contact/contact.component';
 import { CartComponent } from './pages/cart/cart.component';
 import { CheckoutComponent } from './pages/checkout/checkout.component';
+import { PlaceOrderComponent } from './pages/place-order/place-order.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -12,7 +13,6 @@ export const routes: Routes = [
   { path: 'contact-us', component: ContactComponent },
   { path: 'cart', component: CartComponent },
   { path: 'checkout', component: CheckoutComponent },
+  { path: 'place-order', component: PlaceOrderComponent },
 
-
-  // optional fallback
 ];

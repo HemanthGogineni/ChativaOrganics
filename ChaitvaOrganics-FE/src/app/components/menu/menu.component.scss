@@ -8,3 +8,14 @@
     background-color: red;
     color: white;
 }
+
+.social-icon {
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
+    transition: transform 0.2s ease;
+}
+
+.social-icon:hover {
+    transform: scale(1.5);
+}

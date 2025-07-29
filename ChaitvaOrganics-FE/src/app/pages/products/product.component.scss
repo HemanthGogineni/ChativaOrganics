@@ -4,3 +4,24 @@
   padding: 1rem 0;
   font-size: 0.9rem;
 }
+
+.add-to-cart-btn {
+  background-color: #ff914d;
+  /* Or any brand color */
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 20px;
+  /* Makes it pill-shaped */
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.add-to-cart-btn:hover {
+  background-color: #ff6f1a;
+  transform: scale(1.1);
+
+}

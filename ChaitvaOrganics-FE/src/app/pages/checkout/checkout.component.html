@@ -50,7 +50,7 @@
                 <p>Subtotal: ₹{{ subtotal }}</p>
                 <h3>Grand Total: ₹{{ total }}</h3>
             </div>
-            <button class="btn-checkout">Place Order</button>
+            <button (click)="placeOrder()" class="btn-checkout">Place Order</button>
         </div>
 
         <ng-template #empty>

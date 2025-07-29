@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { CartService } from '../cart/cart.service';
 
 @Component({
@@ -12,7 +12,7 @@ import { CartService } from '../cart/cart.service';
 })
 export class ProductComponent {
 
-  constructor(private cartService: CartService) { }
+  constructor(private cartService: CartService, private router: Router) { }
 
   categories = [
     { id: 'rice', name: 'Rice & Grains' },
@@ -58,6 +58,7 @@ export class ProductComponent {
   addToCart(product: any) {
     const itemWithQuantity = { ...product, quantity: 1 };
     this.cartService.addToCart(itemWithQuantity);
+    this.router.navigate(['/cart']);
   }
 
   get filteredProducts() {

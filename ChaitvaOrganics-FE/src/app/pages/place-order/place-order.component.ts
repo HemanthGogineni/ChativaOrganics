@@ -3,12 +3,13 @@ import { Component, Input } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { PlaceOrderService } from './place-order.service';
 import { OrderDataService } from '../checkout/order.service';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 
 @Component({
-  selector: 'app-palce-order',
-  templateUrl: './palce-order.component.html',
-  styleUrls: ['./palce-order.component.scss'],
-  imports: [CommonModule, RouterModule],
+  selector: 'app-place-order',
+  templateUrl: './place-order.component.html',
+  styleUrls: ['./place-order.component.scss'],
+  imports: [CommonModule, RouterModule, HttpClientModule],
 })
 export class PlaceOrderComponent {
 

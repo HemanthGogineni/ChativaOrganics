@@ -2,15 +2,18 @@
 <div class="container-fluid fixed-top px-0 wow fadeIn  bg-white" data-wow-delay="0.1s">
     <div class="top-bar row gx-0 align-items-center d-none d-lg-flex">
         <div class="col-lg-6 px-5 text-start">
-            <small><i class="fa fa-map-marker-alt me-2"></i>16-18-64, Sharoff Bazar, Revenue ward 9, Tenali, 522201
+            <small><i class="fa fa-map-marker-alt me-2"></i>16-18-64, Salt Bazar, Revenue ward 9, Tenali, 522201
             </small>
             <small class="ms-4"><i class="fa fa-envelope me-2"></i>info&#64;chaitvaorganics.com</small>
         </div>
         <div class="col-lg-6 px-5 text-end">
             <small>Follow us: </small>
             <a class="text-body ms-3" target="_blank"
-                href="https://www.instagram.com/chaitva_organics_?igsh=ZnduYTY4bjd5bW95"><i class="fab fa-instagram">
-                    &#64;chaitva_organics_</i></a>
+                href="https://www.instagram.com/chaitva_organics_?igsh=ZnduYTY4bjd5bW95"><img
+                    src="assets/img/instagram-48.png" alt="Instagram" class="social-icon" /></a>
+
+            <a class="text-body ms-3" target="_blank" href="https://wa.me/9154850295"><img
+                    src="assets/img/whatsapp-50.png" alt="Instagram" class="social-icon" /></a>
         </div>
     </div>
 
@@ -26,13 +29,16 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarCollapse">
             <div class="navbar-nav ms-auto p-4 p-lg-0">
-                <a routerLink="/home" routerLinkActive="active" class="nav-item nav-link"
-                    [routerLinkActiveOptions]="{ exact: true }">Home</a>
-                <a routerLink="/products" routerLinkActive="active" class="nav-item nav-link">Products</a>
-                <a routerLink="/contact-us" routerLinkActive="active" class="nav-item nav-link">Contact Us</a>
+                <a routerLink="/home" routerLinkActive="active" class="nav-item nav-link" data-bs-toggle="collapse"
+                    data-bs-target=".navbar-collapse.show" [routerLinkActiveOptions]="{ exact: true }">Home</a>
+                <a routerLink="/products" routerLinkActive="active" class="nav-item nav-link" data-bs-toggle="collapse"
+                    data-bs-target=".navbar-collapse.show">Products</a>
+                <a routerLink="/contact-us" routerLinkActive="active" class="nav-item nav-link"
+                    data-bs-toggle="collapse" data-bs-target=".navbar-collapse.show">Contact Us</a>
             </div>
             <div class="d-flex ms-2">
-                <a routerLink="/cart" routerLinkActive="active" class="btn-sm-square ms-3 cart-icon position-relative">
+                <a routerLink="/cart" routerLinkActive="active" class="btn-sm-square ms-3 cart-icon position-relative"
+                    data-bs-toggle="collapse" data-bs-target=".navbar-collapse.show">
                     <small class="fa fa-shopping-bag text-body"></small>
                     <span
                         class="cart-badge position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">

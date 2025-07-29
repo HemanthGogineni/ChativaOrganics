@@ -7,9 +7,8 @@ export class PlaceOrderService {
 
     getPaymentDetails(orderTotal: number) {
         return this.http.get<{
-            upiImg: string | null; upiLink: string, qrImageBytes: string
-        }>(
-            `/api/checkout/getPaymentDetails?amount=${orderTotal}`
-        );
+            upiLink: string | null;
+            qrImageBytes: string;
+        }>(`http://localhost:8088/api/checkout/getPaymentDetails?amount=${orderTotal}`);
     }
 }
