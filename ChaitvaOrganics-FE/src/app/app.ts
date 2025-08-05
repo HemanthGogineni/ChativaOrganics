@@ -14,7 +14,7 @@ import { HomeComponent } from './pages/home/home.component';
 export class App {
   constructor(private router: Router) {
     this.router.events.subscribe((event) => {
-      if (event instanceof NavigationEnd) {
+      if (typeof window !== 'undefined' && event instanceof NavigationEnd) {
         window.scrollTo({ top: 0, behavior: 'smooth' });
       }
     });

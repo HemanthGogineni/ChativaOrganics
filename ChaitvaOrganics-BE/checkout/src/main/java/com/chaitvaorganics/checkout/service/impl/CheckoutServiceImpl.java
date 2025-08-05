@@ -6,6 +6,7 @@ import com.chaitvaorganics.checkout.entity.CheckoutOrderEntity;
 import com.chaitvaorganics.checkout.entity.OrderItemEntity;
 import com.chaitvaorganics.checkout.repository.CheckoutOrderRepository;
 import com.chaitvaorganics.checkout.service.CheckoutService;
+import com.chaitvaorganics.checkout.util.EmailService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -44,6 +45,9 @@ public class CheckoutServiceImpl implements CheckoutService {
     @Value("${upload.dir}")
     private String uploadDir;
 
+    @Autowired
+    EmailService emailService;
+
     @Override
     public UPIDetailsDto getUPIDetails(double amount) throws IOException {
 
@@ -68,15 +72,15 @@ public class CheckoutServiceImpl implements CheckoutService {
 
         List<OrderItemEntity> itemEntities = dto.getItems().stream().map(item -> {
             OrderItemEntity entity = new OrderItemEntity();
-            entity.setProductName(item.getProductName());
+            entity.setProductName(item.getName());
             entity.setPrice(item.getPrice());
             entity.setQuantity(item.getQuantity());
             entity.setOrder(order);
             return entity;
-        }).collect(Collectors.toUnmodifiableList());
+        }).toList();
 
         order.setItems(itemEntities);
-
+        emailService.sendOrderConfirmationWithAttachment(dto, screenshot);
         return orderRepo.save(order);
     }
 

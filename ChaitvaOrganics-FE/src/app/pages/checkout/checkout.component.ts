@@ -3,14 +3,25 @@ import { Component, Input } from '@angular/core';
 import { CartService } from '../cart/cart.service';
 import { Router } from '@angular/router';
 import { OrderDataService } from './order.service';
+import { HttpClientModule } from '@angular/common/http';
+import { FormsModule, NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-checkout',
   templateUrl: './checkout.component.html',
   styleUrls: ['./checkout.component.scss'],
-  imports: [CommonModule],
+  standalone: true,
+  imports: [CommonModule, FormsModule],
 })
 export class CheckoutComponent {
+
+  checkout = {
+    email: '',
+    fullName: '',
+    address: '',
+    phone: '',
+    paymentMethod: ''
+  };
 
   cartItems: any[] = [];
 
@@ -37,8 +48,14 @@ export class CheckoutComponent {
   }
 
 
-  placeOrder() {
-    this.orderService.setOrderData(this.cartItems, this.subtotal);
+  placeOrder(form: NgForm) {
+    if (form.invalid) {
+      Object.values(form.controls).forEach(control => {
+        control.markAsTouched();
+      });
+      return;
+    }
+    this.orderService.setOrderData(this.cartItems, this.subtotal, form.value);
     this.router.navigate(['/place-order']);
   }
 

@@ -10,5 +10,5 @@ import java.io.IOException;
 public interface CheckoutService {
     UPIDetailsDto  getUPIDetails(double amount) throws IOException;
 
-    CheckoutOrderEntity saveOrder(CheckoutRequestDto dto, MultipartFile screenshot) throws IOException;
+    CheckoutOrderEntity saveOrder(CheckoutRequestDto dto, MultipartFile file) throws IOException;
 }
