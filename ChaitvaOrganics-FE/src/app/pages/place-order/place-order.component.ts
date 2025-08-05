@@ -43,7 +43,7 @@ export class PlaceOrderComponent implements OnInit {
     this.http.get<{
       upiLink: string | null;
       qrImageBytes: string;
-    }>(`http://localhost:8080/api/checkout/getPaymentDetails?amount=${this.total}`).subscribe(res => {
+    }>(`https://www.chaitvaorganics.com/api/checkout/getPaymentDetails?amount=${this.total}`).subscribe(res => {
       this.qrImageBase64 = res.qrImageBytes;
       this.upiLink = res.upiLink;
       this.showPaymentUI = true;
@@ -85,7 +85,7 @@ export class PlaceOrderComponent implements OnInit {
     const jsonBlob = new Blob([JSON.stringify(this.orderData)], { type: 'application/json' });
     formData.append('checkout', jsonBlob);
 
-    this.http.post('http://localhost:8080/api/checkout/finalPayment', formData)
+    this.http.post('https://www.chaitvaorganics.com/api/api/checkout/finalPayment', formData)
       .subscribe({
         next: (res) => {
           this.isSubmitting = false;
