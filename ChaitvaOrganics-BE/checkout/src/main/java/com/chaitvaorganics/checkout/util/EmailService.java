@@ -20,6 +20,7 @@ public class EmailService {
 
     @Value("${email.receivers}")
     private String[] receivers;
+    
     private final JavaMailSender mailSender;
 
     public void sendOrderConfirmationWithAttachment(CheckoutRequestDto request, MultipartFile attachment) {

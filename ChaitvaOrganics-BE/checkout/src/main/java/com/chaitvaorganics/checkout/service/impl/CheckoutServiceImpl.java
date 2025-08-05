@@ -30,13 +30,13 @@ import java.util.stream.Collectors;
 public class CheckoutServiceImpl implements CheckoutService {
 
 
-    @Value("upi.id")
+    @Value("${upi.id}")
     private String upiId;
 
-    @Value("upi.name")
+    @Value("${upi.name}")
     private String upiName;
 
-    @Value("upi.currency")
+    @Value("${upi.currency} ")
     private String upiCurrency;
 
     @Autowired
