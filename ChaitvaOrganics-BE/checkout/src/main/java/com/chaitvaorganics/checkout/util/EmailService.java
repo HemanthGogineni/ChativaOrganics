@@ -4,6 +4,7 @@ import com.chaitvaorganics.checkout.dto.OrderItemDto;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -16,6 +17,9 @@ import java.util.List;
 @RequiredArgsConstructor
 public class EmailService {
 
+
+    @Value("${email.receivers}")
+    private String[] receivers;
     private final JavaMailSender mailSender;
 
     public void sendOrderConfirmationWithAttachment(CheckoutRequestDto request, MultipartFile attachment) {
@@ -23,7 +27,7 @@ public class EmailService {
             MimeMessage message = mailSender.createMimeMessage();
 
             MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
-            helper.setTo(new String[]{"chandra@chaitvaorganics.com", "chaitu@chaitvaorganics.com"});
+            helper.setTo(receivers);
             helper.setSubject("🛒 New Order Received - " + request.getFullName());
             helper.setFrom("info@chaitvaorganics.com");
 
