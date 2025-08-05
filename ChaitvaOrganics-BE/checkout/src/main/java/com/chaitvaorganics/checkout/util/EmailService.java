@@ -23,7 +23,7 @@ public class EmailService {
             MimeMessage message = mailSender.createMimeMessage();
 
             MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
-            helper.setTo("hemanthgogineni485@gmail.com"); // ⬅ Change to your admin email
+            helper.setTo(new String[]{"chandra@chaitvaorganics.com", "chaitu@chaitvaorganics.com"});
             helper.setSubject("🛒 New Order Received - " + request.getFullName());
             helper.setFrom("info@chaitvaorganics.com");
 
