@@ -85,7 +85,7 @@ export class PlaceOrderComponent implements OnInit {
     const jsonBlob = new Blob([JSON.stringify(this.orderData)], { type: 'application/json' });
     formData.append('checkout', jsonBlob);
 
-    this.http.post('https://www.chaitvaorganics.com/api/api/checkout/finalPayment', formData)
+    this.http.post('https://www.chaitvaorganics.com/api/checkout/finalPayment', formData)
       .subscribe({
         next: (res) => {
           this.isSubmitting = false;
