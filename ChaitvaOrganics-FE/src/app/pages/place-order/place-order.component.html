@@ -1,24 +1,33 @@
 <div class="container-xxl py-5">
     <div class="upi-container">
+        <!-- QR Code Section -->
         <div class="qr-section">
-            <img *ngIf="qrImageBase64" [src]="qrImageBase64" alt="QR Code" />
+            <ng-container *ngIf="qrImageBase64; else loading">
+                <img [src]="qrImageBase64" alt="QR Code" />
+            </ng-container>
         </div>
 
+        <!-- Divider -->
         <div class="or-divider">
             <span>OR</span>
         </div>
 
+        <!-- UPI Link Section -->
         <div class="link-section">
-            <a *ngIf="upiLink" [href]="upiLink" target="_blank">
-                <button class="upi-button">Pay Now via UPI App</button>
-            </a>
+            <ng-container *ngIf="upiLink; else loading">
+                <a [href]="upiLink" target="_blank">
+                    <button class="upi-button">Pay Now via UPI App</button>
+                </a>
+            </ng-container>
         </div>
     </div>
 
+    <!-- Loading Template -->
     <ng-template #loading>
         <p>Waiting for payment details...</p>
     </ng-template>
 
+    <!-- Upload Section -->
     <div class="upload-section">
         <label for="screenshotUpload">Upload Payment Screenshot:</label>
         <input type="file" id="screenshotUpload" (change)="onFileSelected($event)" />
@@ -26,14 +35,5 @@
         <button (click)="finalOrder()" [disabled]="isSubmitting">
             {{ isSubmitting ? 'Submitting...' : 'Submit' }}
         </button>
-    </div>
-
-</div>
-
-<div class="modal-backdrop" *ngIf="showModal">
-    <div class="modal">
-        <h2>{{ modalTitle }}</h2>
-        <p>{{ modalMessage }}</p>
-        <button (click)="closeModal()">OK</button>
     </div>
 </div>

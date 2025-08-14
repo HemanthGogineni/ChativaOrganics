@@ -5,6 +5,7 @@ import { ContactComponent } from './pages/contact/contact.component';
 import { CartComponent } from './pages/cart/cart.component';
 import { CheckoutComponent } from './pages/checkout/checkout.component';
 import { PlaceOrderComponent } from './pages/place-order/place-order.component';
+import { OrderStatusComponent } from './pages/oder-status/order-status.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -14,5 +15,6 @@ export const routes: Routes = [
   { path: 'cart', component: CartComponent },
   { path: 'checkout', component: CheckoutComponent },
   { path: 'place-order', component: PlaceOrderComponent },
+  { path: 'order-status', component: OrderStatusComponent },
 
 ];

@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, NgZone, OnInit } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { OrderDataService } from '../checkout/order.service';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
@@ -29,7 +29,8 @@ export class PlaceOrderComponent implements OnInit {
     private orderService: OrderDataService,
     private http: HttpClient,
     private router: Router,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private ngZone: NgZone
   ) {
 
   }
@@ -44,10 +45,12 @@ export class PlaceOrderComponent implements OnInit {
       upiLink: string | null;
       qrImageBytes: string;
     }>(`https://www.chaitvaorganics.com/api/checkout/getPaymentDetails?amount=${this.total}`).subscribe(res => {
-      this.qrImageBase64 = res.qrImageBytes;
-      this.upiLink = res.upiLink;
-      this.showPaymentUI = true;
-      this.cdr.detectChanges();
+      this.ngZone.run(() => {
+        this.qrImageBase64 = res.qrImageBytes;
+        this.upiLink = res.upiLink;
+        this.showPaymentUI = true;
+      });
+
 
     });
 
@@ -87,21 +90,12 @@ export class PlaceOrderComponent implements OnInit {
 
     this.http.post('https://www.chaitvaorganics.com/api/checkout/finalPayment', formData)
       .subscribe({
-        next: (res) => {
-          this.isSubmitting = false;
-          this.modalTitle = '✅ Order Placed Successfully';
-          this.modalMessage = 'Thank you for your order! Click OK to continue.';
-          this.showModal = true;
-          console.log('showModal:', this.showModal);
-
+        next: () => {
+          this.router.navigate(['/order-status'], { queryParams: { status: 'success' } });
         },
         error: (err) => {
-          console.error(err);
-          this.isSubmitting = false;
-          this.modalTitle = '❌ Order Failed';
-          this.modalMessage = 'Something went wrong. Please contact support.';
-          this.showModal = true;
-          console.log('showModal:', this.showModal);
+          this.router.navigate(['/order-status'], { queryParams: { status: 'error' } });
+
         }
       });
   }

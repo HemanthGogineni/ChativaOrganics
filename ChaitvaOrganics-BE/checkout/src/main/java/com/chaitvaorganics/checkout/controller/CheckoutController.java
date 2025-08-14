@@ -23,7 +23,7 @@ public class CheckoutController {
     }
 
     @PostMapping("/finalPayment")
-    public ResponseEntity<UPIDetailsDto> checkout(@RequestPart("checkout") CheckoutRequestDto requestDto,
+    public ResponseEntity<Void> checkout(@RequestPart("checkout") CheckoutRequestDto requestDto,
                                                   @RequestPart("file") MultipartFile file) throws IOException {
         checkoutService.saveOrder(requestDto, file);
         return null;

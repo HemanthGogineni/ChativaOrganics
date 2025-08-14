@@ -36,7 +36,7 @@ public class CheckoutServiceImpl implements CheckoutService {
     @Value("${upi.name}")
     private String upiName;
 
-    @Value("${upi.currency} ")
+    @Value("${upi.currency}")
     private String upiCurrency;
 
     @Autowired
@@ -85,6 +85,7 @@ public class CheckoutServiceImpl implements CheckoutService {
     }
 
     private String generateUpiLink(double amount) {
+
         String pa = URLEncoder.encode(upiId, StandardCharsets.UTF_8);
         String pn = URLEncoder.encode(upiName, StandardCharsets.UTF_8);
         String am = URLEncoder.encode(String.format("%.2f", amount), StandardCharsets.UTF_8);
