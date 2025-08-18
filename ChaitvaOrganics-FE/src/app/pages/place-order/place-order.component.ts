@@ -6,7 +6,6 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
 
 @Component({
   selector: 'app-place-order',
-  standalone: true,
   templateUrl: './place-order.component.html',
   styleUrls: ['./place-order.component.scss'],
   imports: [CommonModule, RouterModule, HttpClientModule]
@@ -49,6 +48,7 @@ export class PlaceOrderComponent implements OnInit {
         this.qrImageBase64 = res.qrImageBytes;
         this.upiLink = res.upiLink;
         this.showPaymentUI = true;
+        this.cdr.detectChanges();
       });
 
 
