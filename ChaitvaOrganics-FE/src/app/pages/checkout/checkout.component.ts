@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { OrderDataService } from './order.service';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, NgForm } from '@angular/forms';
+import { AddressService } from './address.service';
 
 @Component({
   selector: 'app-checkout',
@@ -19,13 +20,22 @@ export class CheckoutComponent {
     email: '',
     fullName: '',
     address: '',
+    addressLine1: '',
+    addressLine2: '',
+    landmark: '',
+    city: '',
+    state: '',
+    pincode: '',
+    country: '',
     phone: '',
     paymentMethod: ''
   };
 
   cartItems: any[] = [];
-
-  constructor(private cartService: CartService, private router: Router, private orderService: OrderDataService) { }
+  countries: any[] = [];
+  states: string[] = [];
+  constructor(private cartService: CartService, private router: Router,
+    private orderService: OrderDataService, private addressService: AddressService) { }
 
   ngOnInit(): void {
     this.cartService.cartItems$.subscribe(items => {
@@ -55,6 +65,7 @@ export class CheckoutComponent {
       });
       return;
     }
+    this.checkout.address = `${this.checkout.addressLine1 || ''}, ${this.checkout.addressLine2 || ''}, ${this.checkout.landmark || ''}, ${this.checkout.city || ''}, ${this.checkout.state || ''}, ${this.checkout.pincode || ''}, ${this.checkout.country || ''}`.replace(/,\s*,/g, ',').trim();
     this.orderService.setOrderData(this.cartItems, this.subtotal, form.value);
     this.router.navigate(['/place-order']);
   }

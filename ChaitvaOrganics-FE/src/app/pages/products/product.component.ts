@@ -23,6 +23,7 @@ export class ProductComponent {
   ];
 
   selectedCategory = 'rice';
+  cartItems: any[] = [];
 
   products = [
     { id: '1', name: 'Black Rice (1kg)', price: 290, image: 'black-rice.jpeg', category: 'rice' },
@@ -55,10 +56,16 @@ export class ProductComponent {
 
   ];
 
+  ngOnInit() {
+    this.cartService.cartItems$.subscribe(items => {
+      this.cartItems = items;
+    });
+  }
+
   addToCart(product: any) {
     const itemWithQuantity = { ...product, quantity: 1 };
     this.cartService.addToCart(itemWithQuantity);
-    this.router.navigate(['/cart']);
+    // this.router.navigate(['/cart']);
   }
 
   get filteredProducts() {
@@ -67,5 +74,8 @@ export class ProductComponent {
 
   setCategory(categoryId: string) {
     this.selectedCategory = categoryId;
+  }
+  isInCart(productId: string): boolean {
+    return this.cartItems.some(item => item.id === productId);
   }
 }

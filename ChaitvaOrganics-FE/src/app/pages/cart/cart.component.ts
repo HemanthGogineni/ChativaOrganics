@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input } from '@angular/core';
+import { Component } from '@angular/core';
 import { CartService } from './cart.service';
 import { trigger, transition, style, animate } from '@angular/animations';
 import { RouterModule } from '@angular/router';
@@ -17,7 +17,6 @@ import { RouterModule } from '@angular/router';
       ])
     ])
   ]
-
 })
 export class CartComponent {
   cart: any[] = [];
@@ -31,13 +30,16 @@ export class CartComponent {
   remove(index: number) {
     this.cartService.removeFromCart(index);
   }
+
   increment(index: number) {
-    this.cart[index].quantity++;
+    const newQty = this.cart[index].quantity + 1;
+    this.cartService.updateQuantity(index, newQty);
   }
 
   decrement(index: number) {
     if (this.cart[index].quantity > 1) {
-      this.cart[index].quantity--;
+      const newQty = this.cart[index].quantity - 1;
+      this.cartService.updateQuantity(index, newQty);
     } else {
       this.remove(index);
     }

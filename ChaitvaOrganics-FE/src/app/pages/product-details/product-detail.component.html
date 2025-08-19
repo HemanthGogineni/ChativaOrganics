@@ -1,0 +1,42 @@
+<div class="container-xxl py-5">
+    <div class="product-details-page">
+        <!-- LEFT: Product Image -->
+        <div class="product-image">
+            <img class="img-fluid w-100" [src]="'/assets/img/product-imgs/' + product.image" [alt]="product.name">
+        </div>
+
+        <!-- RIGHT: Product Info -->
+        <div class="product-info">
+            <h1>{{ product.name }}</h1>
+            <!-- <div class="reviews">
+            ⭐⭐⭐⭐⭐ <span>{{ product.reviews }} reviews</span>
+        </div> -->
+
+            <div class="price">
+                <span class="amount">₹{{ product.price }}</span>
+                <small>Tax included. Shipping calculated at checkout</small>
+            </div>
+
+            <!-- Quantity -->
+            <div class="quantity">
+                <h4>Quantity</h4>
+                <div class="quantity-box">
+                    <button [disabled]="isInCart(product.id)" (click)="decrement()">-</button>
+                    <span>{{ quantity }}</span>
+                    <button [disabled]="isInCart(product.id)" (click)="increment()">+</button>
+                </div>
+            </div>
+
+            <!-- Actions -->
+            <div class="cart-section w-100 py-2">
+                <button [disabled]="isInCart(product.id)" class="add-to-cart-btn" (click)="addToCart()">
+                    <i class="fa fa-shopping-bag text-primary me-2"></i>Add to cart
+                </button>
+
+                <span *ngIf="isInCart(product.id)" class="added-badge">
+                    <i class="fa fa-check-circle"></i> Added
+                </span>
+            </div>
+        </div>
+    </div>
+</div>

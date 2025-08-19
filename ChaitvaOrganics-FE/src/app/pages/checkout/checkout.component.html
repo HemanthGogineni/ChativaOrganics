@@ -1,65 +1,139 @@
 <div class="checkout-container">
+    <!-- Left: Form -->
     <div class="checkout-left">
         <h2>Shipping Information</h2>
+
         <form #checkoutForm="ngForm" (ngSubmit)="placeOrder(checkoutForm)" novalidate>
-            <div class="form-group">
-                <label>Email</label>
-                <input type="email" class="form-control" name="email" [(ngModel)]="checkout.email" required
-                    #email="ngModel" />
-                <div class="error" *ngIf="email.invalid && (email.touched || checkoutForm.submitted)">
-                    <div *ngIf="email.errors?.['required']">Email is required.</div>
-                    <div *ngIf="email.errors?.['email']">Invalid email format.</div>
+            <div class="form-grid">
+                <!-- Email -->
+                <div class="form-group">
+                    <input type="email" name="email" [(ngModel)]="checkout.email" required email #email="ngModel"
+                        placeholder=" " />
+                    <label>Email</label>
+                    <div class="error" *ngIf="email.invalid && (email.touched || checkoutForm.submitted)">
+                        <div *ngIf="email.errors?.['required']">Email is required.</div>
+                        <div *ngIf="email.errors?.['email']">Invalid email format.</div>
+                    </div>
                 </div>
-            </div>
-            <div class="form-group">
-                <label>Full Name</label>
-                <input type="text" class="form-control" name="fullName" [(ngModel)]="checkout.fullName" required
-                    #fullName="ngModel" />
-                <div class="error" *ngIf="fullName.invalid && (fullName.touched || checkoutForm.submitted)">
-                    Full name is required.
+
+                <!-- Full Name -->
+                <div class="form-group">
+                    <input type="text" name="fullName" [(ngModel)]="checkout.fullName" required #fullName="ngModel"
+                        placeholder=" " />
+                    <label>Full Name</label>
+                    <div class="error" *ngIf="fullName.invalid && (fullName.touched || checkoutForm.submitted)">
+                        Full name is required.
+                    </div>
                 </div>
             </div>
 
+            <!-- Phone -->
             <div class="form-group">
-                <label>Address</label>
-                <textarea class="form-control" name="address" [(ngModel)]="checkout.address" required
-                    #address="ngModel"></textarea>
-                <div class="error" *ngIf="address.invalid && (address.touched || checkoutForm.submitted)">
-                    Address is required.
-                </div>
-            </div>
-
-            <!-- PHONE NUMBER -->
-            <div class="form-group">
+                <input type="text" name="phone" [(ngModel)]="checkout.phone" required pattern="^[6-9]\d{9}$"
+                    #phone="ngModel" placeholder=" " />
                 <label>Phone Number</label>
-                <input type="text" class="form-control" name="phone" [(ngModel)]="checkout.phone" required
-                    pattern="^[6-9]\d{9}$" #phone="ngModel" />
                 <div class="error" *ngIf="phone.invalid && (phone.touched || checkoutForm.submitted)">
                     <div *ngIf="phone.errors?.['required']">Phone number is required.</div>
                     <div *ngIf="phone.errors?.['pattern']">Phone must be a 10-digit number starting with 6-9.</div>
                 </div>
             </div>
 
+            <!-- Address -->
+            <div class="address-section">
+                <h4 class="mb-3">Shipping Address</h4>
+                <div class="row g-3">
+                    <!-- Address Line 1 -->
+                    <div class="col-md-6 form-group">
+                        <input type="text" name="addressLine1" [(ngModel)]="checkout.addressLine1" required
+                            #addressLine1="ngModel" placeholder=" " />
+                        <label>Address Line 1</label>
+                        <div class="error"
+                            *ngIf="addressLine1.invalid && (addressLine1.touched || checkoutForm.submitted)">
+                            Address Line 1 is required.
+                        </div>
+                    </div>
 
+                    <!-- Address Line 2 -->
+                    <div class="col-md-6 form-group">
+                        <input type="text" name="addressLine2" [(ngModel)]="checkout.addressLine2" placeholder=" " />
+                        <label>Address Line 2</label>
+                    </div>
+
+                    <!-- Landmark -->
+                    <div class="col-md-6 form-group">
+                        <input type="text" name="landmark" [(ngModel)]="checkout.landmark" required #landmark="ngModel"
+                            placeholder=" " />
+                        <label>Landmark</label>
+                        <div class="error" *ngIf="landmark.invalid && (landmark.touched || checkoutForm.submitted)">
+                            Landmark is required.
+                        </div>
+                    </div>
+
+                    <!-- City -->
+                    <div class="col-md-6 form-group">
+                        <input type="text" name="city" [(ngModel)]="checkout.city" required #city="ngModel"
+                            placeholder=" " />
+                        <label>City</label>
+                        <div class="error" *ngIf="city.invalid && (city.touched || checkoutForm.submitted)">
+                            City is required.
+                        </div>
+                    </div>
+
+                    <!-- State -->
+                    <div class="col-md-6 form-group">
+                        <input type="text" name="state" [(ngModel)]="checkout.state" required #state="ngModel"
+                            placeholder=" " />
+                        <label>State</label>
+                        <div class="error" *ngIf="state.invalid && (state.touched || checkoutForm.submitted)">
+                            State is required.
+                        </div>
+                    </div>
+                    <!-- Country -->
+                    <div class="col-md-6 form-group">
+                        <input type="text" name="country" [(ngModel)]="checkout.country" required #country="ngModel"
+                            placeholder=" " />
+                        <label>Country</label>
+                        <div class="error" *ngIf="country.invalid && (country.touched || checkoutForm.submitted)">
+                            Country is required.
+                        </div>
+                    </div>
+
+                    <!-- Pincode -->
+                    <div class="col-md-12 form-group">
+                        <input type="text" name="pincode" [(ngModel)]="checkout.pincode" required
+                            pattern="^[1-9][0-9]{5}$" #pincode="ngModel" placeholder=" " />
+                        <label>Pincode</label>
+                        <div class="error" *ngIf="pincode.invalid && (pincode.touched || checkoutForm.submitted)">
+                            <div *ngIf="pincode.errors?.['required']">Pincode is required.</div>
+                            <div *ngIf="pincode.errors?.['pattern']">Enter a valid 6-digit pincode.</div>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+
+            <!-- Payment -->
             <h3>Payment Method</h3>
             <div class="form-group">
-                <select class="form-control" name="paymentMethod" [(ngModel)]="checkout.paymentMethod" required
-                    #paymentMethod="ngModel">
+                <select name="paymentMethod" [(ngModel)]="checkout.paymentMethod" required #paymentMethod="ngModel">
                     <option value="" disabled>Select Payment Method</option>
                     <option>UPI</option>
                 </select>
+                <label>Payment Method</label>
                 <div class="error" *ngIf="paymentMethod.invalid && (paymentMethod.touched || checkoutForm.submitted)">
                     Please select a payment method.
                 </div>
             </div>
 
-            <!-- ✅ Don't disable the button -->
-            <button type="submit" class="btn-checkout">
-                Place Order
+            <!-- Button -->
+            <button type="submit" class="btn-checkout" [disabled]="checkoutForm.invalid">
+                <i class="fa fa-lock"></i> Place Order Securely
             </button>
         </form>
     </div>
 
+    <!-- Right: Order Summary -->
     <div class="checkout-right">
         <h2>Your Order</h2>
         <div *ngIf="cartItems.length > 0; else empty">
@@ -70,17 +144,15 @@
                 <div class="cart-summary-details">
                     <p class="item-name">{{ item.name }}</p>
                     <p>Qty: {{ item.quantity }}</p>
-                    <p>Price: ₹{{ item.price * item.quantity }}</p>
+                    <p>₹{{ item.price * item.quantity }}</p>
                 </div>
             </div>
-
             <hr />
             <div class="totals">
                 <p>Subtotal: ₹{{ subtotal }}</p>
-                <h3>Grand Total: ₹{{ total }}</h3>
+                <h3 class="grand-total">Grand Total: ₹{{ total }}</h3>
             </div>
         </div>
-
         <ng-template #empty>
             <p>Your cart is empty.</p>
         </ng-template>

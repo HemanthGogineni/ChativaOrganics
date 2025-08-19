@@ -18,10 +18,50 @@
   cursor: pointer;
   transition: background-color 0.3s ease;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  white-space: nowrap;
+  /* keeps text in one line */
+
+  &:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+  }
 }
 
-.add-to-cart-btn:hover {
-  background-color: #ff6f1a;
-  transform: scale(1.1);
+.cart-section {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  /* space between button and text */
+}
 
+.added-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background-color: #e6f9ed;
+  /* soft green bg */
+  color: #28a745;
+  /* fresh green text */
+  font-weight: 600;
+  font-size: 14px;
+  padding: 6px 12px;
+  border-radius: 20px;
+  animation: popIn 0.4s ease;
+}
+
+.added-badge i {
+  color: #28a745;
+  font-size: 16px;
+}
+
+@keyframes popIn {
+  0% {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
 }

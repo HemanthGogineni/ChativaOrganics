@@ -19,8 +19,6 @@ export class MenuComponent {
   constructor(private cartService: CartService) { }
 
   ngOnInit() {
-    this.cartService.cartItems$.subscribe(items => {
-      this.cartCount = items.reduce((sum, item) => sum + item.quantity, 0);
-    });
+    this.cartService.cartCount$.subscribe(count => this.cartCount = count);
   }
 }

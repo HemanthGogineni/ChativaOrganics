@@ -1,5 +1,11 @@
 <!-- Navbar Start -->
 <div class="container-fluid fixed-top px-0 wow fadeIn  bg-white" data-wow-delay="0.1s">
+    <div class="offers-bar bg-cream text-black">
+        <div class="scrolling-text">
+            🎉 Welcome to Chaitva Organics! Free delivery on orders above ₹999. | 🌿 100% Organic | 📦 Pan India
+            Delivery
+        </div>
+    </div>
     <div class="top-bar row gx-0 align-items-center d-flex flex-column flex-lg-row text-center text-lg-start">
         <div class="col-lg-6 px-5 text-start">
             <small><i class="fa fa-map-marker-alt me-2"></i>16-18-64, Salt Bazar, Revenue ward 9, Tenali, 522201
@@ -40,7 +46,7 @@
                 <a routerLink="/cart" routerLinkActive="active" class="btn-sm-square ms-3 cart-icon position-relative"
                     data-bs-toggle="collapse" data-bs-target=".navbar-collapse.show">
                     <small class="fa fa-shopping-bag text-body"></small>
-                    <span
+                    <span *ngIf="cartCount > 0"
                         class="cart-badge position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
                         {{ cartCount }}
                     </span>

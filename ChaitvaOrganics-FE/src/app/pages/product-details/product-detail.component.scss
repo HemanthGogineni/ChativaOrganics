@@ -1,0 +1,184 @@
+.product-details-page {
+    display: flex;
+    gap: 2rem;
+    padding: 2rem;
+    flex-wrap: wrap;
+
+    .product-image {
+        flex: 1;
+
+        img {
+            max-width: 100%;
+            border-radius: 8px;
+        }
+    }
+
+    .product-info {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+
+        h1 {
+            font-size: 1.8rem;
+            font-weight: bold;
+        }
+
+        .price {
+            font-size: 1.5rem;
+            color: #222;
+
+            .amount {
+                font-weight: bold;
+            }
+
+            small {
+                display: block;
+                font-size: 0.9rem;
+                color: #555;
+            }
+        }
+
+        .variants {
+            display: flex;
+            gap: 0.5rem;
+
+            button {
+                padding: 0.5rem 1rem;
+                border: 1px solid #ccc;
+                border-radius: 4px;
+                background: #fff;
+                cursor: pointer;
+
+                &.active {
+                    background: #f97316;
+                    color: white;
+                    border-color: #f97316;
+                }
+            }
+        }
+
+        .quantity-box {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+
+            button {
+                width: 32px;
+                height: 32px;
+                border: 1px solid #ccc;
+                border-radius: 4px;
+                background: #f9f9f9;
+                cursor: pointer;
+            }
+        }
+
+        .actions {
+            display: flex;
+            gap: 1rem;
+
+            .add-to-cart {
+                padding: 0.8rem 2rem;
+                background: #ff6f1a;
+                color: white;
+                border-radius: 6px;
+                border: none;
+                cursor: pointer;
+            }
+
+            .buy-now {
+                padding: 0.8rem 2rem;
+                background: #f97316;
+                color: white;
+                border-radius: 6px;
+                border: none;
+                cursor: pointer;
+            }
+        }
+
+        .related {
+            margin-top: 2rem;
+
+            .related-item {
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+                margin-top: 0.5rem;
+
+                img {
+                    width: 40px;
+                    height: 40px;
+                    border-radius: 4px;
+                }
+            }
+        }
+    }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .product-details-page {
+        flex-direction: column;
+    }
+}
+
+.add-to-cart-btn {
+    background-color: #ff914d;
+    /* Or any brand color */
+    color: white;
+    border: none;
+    padding: 10px 16px;
+    border-radius: 20px;
+    /* Makes it pill-shaped */
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    white-space: nowrap;
+    /* keeps text in one line */
+
+    &:disabled {
+        background-color: #ccc;
+        cursor: not-allowed;
+    }
+}
+
+.cart-section {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    /* space between button and text */
+}
+
+.added-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background-color: #e6f9ed;
+    /* soft green bg */
+    color: #28a745;
+    /* fresh green text */
+    font-weight: 600;
+    font-size: 14px;
+    padding: 6px 12px;
+    border-radius: 20px;
+    animation: popIn 0.4s ease;
+}
+
+.added-badge i {
+    color: #28a745;
+    font-size: 16px;
+}
+
+@keyframes popIn {
+    0% {
+        transform: scale(0.8);
+        opacity: 0;
+    }
+
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
