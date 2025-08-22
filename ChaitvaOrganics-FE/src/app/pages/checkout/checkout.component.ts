@@ -65,7 +65,7 @@ export class CheckoutComponent {
       });
       return;
     }
-    this.checkout.address = `${this.checkout.addressLine1 || ''}, ${this.checkout.addressLine2 || ''}, ${this.checkout.landmark || ''}, ${this.checkout.city || ''}, ${this.checkout.state || ''}, ${this.checkout.pincode || ''}, ${this.checkout.country || ''}`.replace(/,\s*,/g, ',').trim();
+    form.value.address = `${this.checkout.addressLine1 || ''}, ${this.checkout.addressLine2 || ''}, ${this.checkout.landmark || ''}, ${this.checkout.city || ''}, ${this.checkout.state || ''}, ${this.checkout.pincode || ''}, ${this.checkout.country || ''}`.replace(/,\s*,/g, ',').trim();
     this.orderService.setOrderData(this.cartItems, this.subtotal, form.value);
     this.router.navigate(['/place-order']);
   }

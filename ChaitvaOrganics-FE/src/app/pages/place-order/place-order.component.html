@@ -1,4 +1,12 @@
-<div class="container-xxl py-5">
+<div class="modal-backdrop" *ngIf="showModal">
+    <div class="modal-content">
+        <h3>Payment Instructions</h3>
+        <p>Please upload transaction screenshot here below and submit. Only then your payment gets completed</p>
+        <button class="close-btn" (click)="closeModal()">Continue</button>
+    </div>
+</div>
+
+<div class="container-xxl py-6">
     <div class="upi-container">
         <!-- QR Code Section -->
         <div class="qr-section">

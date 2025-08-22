@@ -20,7 +20,7 @@ export class PlaceOrderComponent implements OnInit {
   checkoutData: any = {};
   orderData: any = {};
   isSubmitting = false;
-  showModal = false;
+  showModal = true;
   modalTitle = '';
   modalMessage = '';
 
@@ -55,6 +55,8 @@ export class PlaceOrderComponent implements OnInit {
     });
 
   }
+
+
   selectedFile: File | null = null;
 
   onFileSelected(event: Event): void {
@@ -102,7 +104,6 @@ export class PlaceOrderComponent implements OnInit {
 
   closeModal(): void {
     this.showModal = false;
-    this.router.navigate(['/products']);
   }
 
 

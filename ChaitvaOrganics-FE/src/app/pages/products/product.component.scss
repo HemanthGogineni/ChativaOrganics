@@ -1,3 +1,4 @@
+/* Footer */
 .footer {
   background-color: #f8f9fa;
   border-top: 1px solid #e5e5e5;
@@ -5,21 +6,82 @@
   font-size: 0.9rem;
 }
 
+/* Category Buttons */
+.category-btn {
+  border: 2px solid #198754;
+  color: #198754;
+  border-radius: 20px;
+  font-weight: 600;
+  padding: 6px 16px;
+  transition: all 0.3s ease;
+
+  &:hover {
+    background-color: #198754;
+    color: #fff;
+  }
+
+  &.active {
+    background-color: #198754;
+    color: #fff;
+  }
+}
+
+.product-item {
+  background: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+  transition: transform 0.3s ease;
+  text-align: center;
+  padding: 12px;
+
+  &:hover {
+    transform: translateY(-6px);
+  }
+
+  img {
+    height: 200px;
+    /* fixed size for alignment */
+    width: auto;
+    /* keep aspect ratio */
+    max-width: 100%;
+    object-fit: contain;
+    /* keeps full product visible */
+    margin: 0 auto;
+    /* center horizontally */
+    display: block;
+  }
+}
+
+.badge-new {
+  background: #ff914d;
+  color: #fff;
+  font-weight: 600;
+  padding: 4px 12px;
+  border-radius: 8px;
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  font-size: 0.75rem;
+}
+
+/* Cart Button */
 .add-to-cart-btn {
   background-color: #ff914d;
-  /* Or any brand color */
   color: white;
   border: none;
-  padding: 10px 16px;
-  border-radius: 20px;
-  /* Makes it pill-shaped */
+  padding: 10px 18px;
+  border-radius: 25px;
   font-weight: 600;
   font-size: 14px;
   cursor: pointer;
-  transition: background-color 0.3s ease;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  white-space: nowrap;
-  /* keeps text in one line */
+  transition: all 0.3s ease;
+  width: 100%;
+  text-align: center;
+
+  &:hover:not(:disabled) {
+    background-color: #e57e3a;
+  }
 
   &:disabled {
     background-color: #ccc;
@@ -29,39 +91,6 @@
 
 .cart-section {
   display: flex;
+  justify-content: center;
   align-items: center;
-  gap: 8px;
-  /* space between button and text */
-}
-
-.added-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  background-color: #e6f9ed;
-  /* soft green bg */
-  color: #28a745;
-  /* fresh green text */
-  font-weight: 600;
-  font-size: 14px;
-  padding: 6px 12px;
-  border-radius: 20px;
-  animation: popIn 0.4s ease;
-}
-
-.added-badge i {
-  color: #28a745;
-  font-size: 16px;
-}
-
-@keyframes popIn {
-  0% {
-    transform: scale(0.8);
-    opacity: 0;
-  }
-
-  100% {
-    transform: scale(1);
-    opacity: 1;
-  }
 }

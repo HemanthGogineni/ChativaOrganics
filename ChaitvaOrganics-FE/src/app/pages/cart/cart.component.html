@@ -1,51 +1,58 @@
-<div class="cart-page">
-    <h2>Your Cart ({{ cart.length }} items)</h2>
+<div class="container-xxl py-6">
+    <div class="cart-page">
+        <h2>Your Cart ({{ cart.length }} items)</h2>
 
-    <div *ngIf="cart.length; else emptyCart">
-        <table class="cart-table">
-            <thead>
-                <tr>
-                    <th>Item</th>
-                    <th>Name</th>
-                    <th>Price</th>
-                    <th>Qty</th>
-                    <th>Total</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr *ngFor="let item of cart; let i = index" [@fadeIn]>
-                    <td><img [src]="'assets/img/product-imgs/' + item.image" class="product-img"
-                            alt="{{ item.name }}" /></td>
-                    <td class="product-name">
-                        <div class="name">{{ item.name }}</div>
-                        <div class="note">Price per unit: ₹{{ item.price }}</div>
-                    </td>
-                    <td>₹{{ item.price }}</td>
-                    <td>
-                        <div class="quantity-box">
-                            <button (click)="decrement(i)">-</button>
-                            <span>{{ item.quantity }}</span>
-                            <button (click)="increment(i)">+</button>
-                        </div>
-                    </td>
-                    <td>₹{{ item.price * item.quantity }}</td>
-                    <td>
-                        <button class="remove-btn" (click)="remove(i)">🗑</button>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+        <div *ngIf="cart.length; else emptyCart">
+            <div class="cart-table-wrapper">
+                <table class="cart-table">
+                    <thead>
+                        <tr>
+                            <th>Item</th>
+                            <th>Name</th>
+                            <th>Price</th>
+                            <th>Qty</th>
+                            <th>Total</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let item of cart; let i = index" [@fadeIn]>
+                            <td>
+                                <img [src]="'assets/img/product-imgs/' + item.image" class="product-img"
+                                    alt="{{ item.name }}" />
+                            </td>
+                            <td class="product-name">
+                                <div class="name">{{ item.name }}</div>
+                                <div class="note">₹{{ item.price }} / unit</div>
+                            </td>
+                            <td>₹{{ item.price }}</td>
+                            <td>
+                                <div class="quantity-box">
+                                    <button (click)="decrement(i)">-</button>
+                                    <span>{{ item.quantity }}</span>
+                                    <button (click)="increment(i)">+</button>
+                                </div>
+                            </td>
+                            <td>₹{{ item.price * item.quantity }}</td>
+                            <td>
+                                <button class="remove-btn" (click)="remove(i)">🗑</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
 
-
-        <div class="cart-summary">
-            <div class="summary-item">Subtotal: ₹{{ getTotal() }}</div>
-            <div class="summary-item grand">Grand Total: ₹{{ getTotal()}}</div>
-            <button class="checkout-btn" routerLink="/checkout">Proceed to Checkout</button>
+            <div class="cart-summary">
+                <div class="summary-item">Subtotal: ₹{{ getTotal() }}</div>
+                <div class="summary-item grand">Grand Total: ₹{{ getTotal() }}</div>
+                <button class="checkout-btn" routerLink="/checkout">
+                    Proceed to Checkout
+                </button>
+            </div>
         </div>
-    </div>
 
-    <ng-template #emptyCart>
-        <p>Your cart is empty. Start shopping!</p>
-    </ng-template>
+        <ng-template #emptyCart>
+            <p class="empty-msg">Your cart is empty. Start shopping!</p>
+        </ng-template>
+    </div>
 </div>

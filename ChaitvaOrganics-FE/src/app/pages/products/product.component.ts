@@ -1,18 +1,19 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { Router, RouterModule } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { CartService } from '../cart/cart.service';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-product',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, FormsModule],
   templateUrl: './product.component.html',
   styleUrls: ['./product.component.scss']
 })
 export class ProductComponent {
 
-  constructor(private cartService: CartService, private router: Router) { }
+  constructor(private cartService: CartService, private router: Router, private route: ActivatedRoute) { }
 
   categories = [
     { id: 'rice', name: 'Rice & Grains' },
@@ -56,9 +57,15 @@ export class ProductComponent {
 
   ];
 
+  searchText: string = '';
+
   ngOnInit() {
     this.cartService.cartItems$.subscribe(items => {
       this.cartItems = items;
+    });
+    this.route.queryParams.subscribe(params => {
+      this.selectedCategory = params['category'] || '';
+      this.searchText = params['search'] || '';
     });
   }
 
@@ -68,13 +75,23 @@ export class ProductComponent {
     // this.router.navigate(['/cart']);
   }
 
+
   get filteredProducts() {
-    return this.products.filter(p => p.category === this.selectedCategory);
+    return this.products.filter(p =>
+      (this.selectedCategory ? p.category === this.selectedCategory : true) &&
+      (this.searchText ? p.name.toLowerCase().includes(this.searchText.toLowerCase()) : true)
+    );
   }
 
-  setCategory(categoryId: string) {
-    this.selectedCategory = categoryId;
+  // ✅ when category clicked, update query params
+  applyCategory(category: string) {
+    if (this.selectedCategory === category) {
+      category = '';
+      this.router.navigate(["/products"]);
+    }
+    this.router.navigate(["/products"], { queryParams: { category } });
   }
+
   isInCart(productId: string): boolean {
     return this.cartItems.some(item => item.id === productId);
   }
