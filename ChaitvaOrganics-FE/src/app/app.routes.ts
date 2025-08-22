@@ -17,6 +17,6 @@ export const routes: Routes = [
   { path: 'checkout', component: CheckoutComponent },
   { path: 'place-order', component: PlaceOrderComponent },
   { path: 'order-status', component: OrderStatusComponent },
-  { path: 'product/:id', component: ProductDetailComponent },
+  { path: 'product/:id', component: ProductDetailComponent, data: { renderMode: 'csr' } }  // or 'ssr' },
 
 ];
