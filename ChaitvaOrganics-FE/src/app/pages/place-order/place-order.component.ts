@@ -21,6 +21,7 @@ export class PlaceOrderComponent implements OnInit {
   orderData: any = {};
   isSubmitting = false;
   showModal = true;
+  noTransactionUploaded = false;
   modalTitle = '';
   modalMessage = '';
   paymentLinks: { default: string | URL; phonepe: string; gpay: string; paytm: string; } = { default: '', phonepe: '', gpay: '', paytm: '' }
@@ -79,7 +80,7 @@ export class PlaceOrderComponent implements OnInit {
 
   finalOrder(): void {
     if (!this.selectedFile) {
-      alert('Please select a file first!');
+      this.noTransactionUploaded = true;
       return;
     }
 
@@ -116,7 +117,9 @@ export class PlaceOrderComponent implements OnInit {
   closeModal(): void {
     this.showModal = false;
   }
-
+  closeTransactionModal(): void {
+    this.noTransactionUploaded = false;
+  }
 
 
 }

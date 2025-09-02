@@ -5,6 +5,13 @@
         <button class="close-btn" (click)="closeModal()">Continue</button>
     </div>
 </div>
+<div class="modal-backdrop" *ngIf="noTransactionUploaded">
+    <div class="modal-content">
+        <h3>Alert!</h3>
+        <p>Please upload a transaction screenshot before placing the order.</p>
+        <button class="close-trans-btn" (click)="closeTransactionModal()">Upload</button>
+    </div>
+</div>
 
 <div class="container-xxl py-6">
     <div class="upi-container">
