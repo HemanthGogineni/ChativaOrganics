@@ -59,6 +59,22 @@ export class PlaceOrderComponent implements OnInit {
           gpay: `https://gpay.app.goo.gl/pay?${params}`,
           paytm: `paytm://pay?${params}`
         };
+        const isAndroid = /Android/i.test(navigator.userAgent);
+        this.paymentLinks = {
+          default: this.upiLink,
+
+          phonepe: isAndroid
+            ? `intent://pay?${params}#Intent;scheme=upi;package=com.phonepe.app;end`
+            : `phonepe://pay?${params}`,
+
+          gpay: isAndroid
+            ? `intent://pay?${params}#Intent;scheme=upi;package=com.google.android.apps.nbu.paisa.user;end`
+            : `tez://upi/pay?${params}`,
+
+          paytm: isAndroid
+            ? `intent://pay?${params}#Intent;scheme=upi;package=net.one97.paytm;end`
+            : `paytmmp://pay?${params}`
+        };
         this.showPaymentUI = true;
         this.cdr.detectChanges();
       });
