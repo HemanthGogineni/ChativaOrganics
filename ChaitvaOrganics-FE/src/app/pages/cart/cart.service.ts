@@ -13,9 +13,10 @@ export class CartService {
     addToCart(product: any) {
         const current = this.items.getValue();
         const index = current.findIndex(p => p.id === product.id);
+        console.log('Adding to cart:', product.quantity, index);
 
         if (index !== -1) {
-            current[index].quantity += 1;
+            current[index].quantity = current[index].quantity + product.quantity;
             this.items.next([...current]);
         } else {
             this.items.next([...current, { ...product, quantity: product.quantity || 1 }]);
@@ -50,6 +51,7 @@ export class CartService {
     private updateCartCount() {
         const total = this.items.getValue()
             .reduce((sum, item) => sum + item.quantity, 0);
+        console.log('Cart count updated:', total);
         this.cartCount.next(total);
     }
 }

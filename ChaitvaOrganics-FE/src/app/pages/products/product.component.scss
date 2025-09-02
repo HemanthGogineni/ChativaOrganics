@@ -60,8 +60,20 @@
   padding: 4px 12px;
   border-radius: 8px;
   position: absolute;
-  top: 12px;
+  top: 0px;
   left: 12px;
+  font-size: 0.75rem;
+}
+
+.badge-top-selling {
+  background: #35a31f;
+  color: #fff;
+  font-weight: 600;
+  padding: 4px 12px;
+  border-radius: 8px;
+  position: absolute;
+  top: 0px;
+  left: 70px;
   font-size: 0.75rem;
 }
 

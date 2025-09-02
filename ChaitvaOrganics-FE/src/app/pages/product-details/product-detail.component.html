@@ -48,17 +48,17 @@
             <div class="quantity">
                 <h4>Quantity</h4>
                 <div class="quantity-box">
-                    <button [disabled]="isInCart(product.id)" (click)="decrement()">-</button>
+                    <button (click)="decrement()">-</button>
                     <span>{{ quantity }}</span>
-                    <button [disabled]="isInCart(product.id)" (click)="increment()">+</button>
+                    <button (click)="increment()">+</button>
                 </div>
             </div>
 
             <!-- Cart & Buy Now -->
             <div class="cart-section py-3">
-                <button [disabled]="isInCart(product.id)" class="add-to-cart-btn" (click)="addToCart()">
+                <button class="add-to-cart-btn" (click)="addToCart()">
                     <i class="fa fa-shopping-bag me-2"></i>
-                    {{ isInCart(product.id) ? 'Added to Cart' : 'Add to Cart' }}
+                    Add to Cart
                 </button>
             </div>
         </div>

@@ -39,6 +39,7 @@
                                     <img [src]="'assets/img/product-imgs/' + product.image" [alt]="product.name">
                                 </a>
                                 <div class="badge-new">New</div>
+                                <!-- <div class="badge-top-selling">🔥 Top Selling</div> -->
                             </div>
 
                             <!-- Product Info -->
@@ -49,14 +50,14 @@
                             </div>
 
                             <!-- Cart Section -->
-                            <div class="cart-section w-100 py-2">
+                            <!-- <div class="cart-section w-100 py-2">
                                 <button [disabled]="isInCart(product.id)" class="add-to-cart-btn"
                                     (click)="addToCart(product)">
                                     <i class="fa fa-shopping-bag text-white me-2"></i>
                                     <span *ngIf="!isInCart(product.id)">Add to cart</span>
                                     <span *ngIf="isInCart(product.id)">Added</span>
                                 </button>
-                            </div>
+                            </div> -->
                         </div>
                     </div>
                 </div>
