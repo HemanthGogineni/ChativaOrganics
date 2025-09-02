@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { CartService } from '../cart/cart.service';
@@ -15,7 +15,7 @@ export class ProductDetailComponent {
     product: any;
     quantity = 1;
     cartItems: any[] = [];
-
+    showAdded = false;
     products = [
         {
             id: '1',
@@ -27,7 +27,7 @@ export class ProductDetailComponent {
             reviews: 32,
             shortDescription: 'SKU: COBLR1KG',
             tags: 'Forbidden rice, High protein, Anthocyanins',
-            longDescription: 'The Superfood Grain of Royalty\nKnown as the “forbidden rice,” Chaitva Organics’ Black Rice is loaded with antioxidants, protein, and fiber. Its deep purple hue comes from anthocyanins, which support heart health and immunity while adding rich flavor to your meals.',
+            longDescription: 'The Superfood Grain of Royalty\nKnown as the “forbidden rice,” Chaitva Organic’s Black Rice is loaded with antioxidants, protein, and fiber. Its deep purple hue comes from anthocyanins, which support heart health and immunity while adding rich flavor to your meals.',
             sensoryExperience: 'Delight in its mildly sweet, nutty flavor and chewy texture. Perfect for rice bowls, puddings, or nutrient-packed side dishes.',
             image: 'black-rice.jpeg',
             category: 'rice',
@@ -51,7 +51,7 @@ export class ProductDetailComponent {
             reviews: 29,
             shortDescription: 'SKU: CORR1KG',
             tags: 'Iron-rich, Traditional, Whole grain',
-            longDescription: 'A Rustic Grain Packed with Strength\nChaitva Organics’ Red Rice is a powerhouse of iron and antioxidants, supporting better digestion and immunity. Traditionally consumed in many cultures, it’s the perfect mix of nutrition and taste for everyday cooking.',
+            longDescription: 'A Rustic Grain Packed with Strength\nChaitva Organic’s Red Rice is a powerhouse of iron and antioxidants, supporting better digestion and immunity. Traditionally consumed in many cultures, it’s the perfect mix of nutrition and taste for everyday cooking.',
             sensoryExperience: 'Revel in its earthy flavor and hearty bite. Ideal for preparing porridges, idlis, or paired with curries for a wholesome meal.',
             image: 'red-rice.jpeg',
             category: 'rice',
@@ -75,7 +75,7 @@ export class ProductDetailComponent {
             reviews: 43,
             shortDescription: 'SKU: COBR1KG',
             tags: 'Whole grain, Fiber-rich, Natural nutrition',
-            longDescription: 'Wholesome Goodness in Every Grain\nChaitva Organics’ Brown Rice is unpolished and naturally rich in fiber, vitamins, and minerals. It supports digestion, balances energy release, and makes a hearty base for your everyday meals. Packed straight from organic farms, it brings earthy flavor and nourishment to your plate.',
+            longDescription: 'Wholesome Goodness in Every Grain\nChaitva Organic’s Brown Rice is unpolished and naturally rich in fiber, vitamins, and minerals. It supports digestion, balances energy release, and makes a hearty base for your everyday meals. Packed straight from organic farms, it brings earthy flavor and nourishment to your plate.',
             sensoryExperience: 'Enjoy the nutty aroma and firm texture with every bite. Pairs well with curries, stir-fries, or as a healthier alternative to white rice for daily meals.',
             image: 'brown-rice.jpeg',
             category: 'rice',
@@ -100,7 +100,7 @@ export class ProductDetailComponent {
             reviews: 22,
             shortDescription: 'SKU: COKVMR1KG',
             tags: 'Aromatic, Traditional, Kerala Cuisine',
-            longDescription: 'Authentic Taste of Kerala in Every Grain\nChaitva Organics’ Kerala Vadi Mattai Rice is a fragrant, long-grained rice variety prized for its distinctive flavor and soft texture. Sourced directly from traditional farms, it’s the perfect base for Kerala-style curries and festive meals.',
+            longDescription: 'Authentic Taste of Kerala in Every Grain\nChaitva Organic’s Kerala Vadi Mattai Rice is a fragrant, long-grained rice variety prized for its distinctive flavor and soft texture. Sourced directly from traditional farms, it’s the perfect base for Kerala-style curries and festive meals.',
             sensoryExperience: 'Breathe in the mild aroma and relish the fluffy, tender grains. A staple for occasions and everyday cooking alike.',
             image: 'kerala-rice.jpeg',
             category: 'rice',
@@ -123,7 +123,7 @@ export class ProductDetailComponent {
             reviews: 40,
             shortDescription: 'SKU: COBP100GM',
             tags: 'Piperine, Aromatic, Sharp heat',
-            longDescription: 'The King of Spices\nChaitva Organics’ Black Pepper is bold, aromatic, and packed with piperine for immunity and digestion support. A must-have spice in every kitchen.',
+            longDescription: 'The King of Spices\nChaitva Organic’s Black Pepper is bold, aromatic, and packed with piperine for immunity and digestion support. A must-have spice in every kitchen.',
             sensoryExperience: 'Pungent aroma with a sharp, spicy kick. Ideal for seasoning dishes and enhancing flavor.',
             image: 'black-pepper.jpeg',
             category: 'spices',
@@ -146,7 +146,7 @@ export class ProductDetailComponent {
             reviews: 26,
             shortDescription: 'SKU: COCS100GM',
             tags: 'Aromatic, Cooling, Digestive',
-            longDescription: 'Aromatic Seeds for Flavor & Wellness\nChaitva Organics’ Cumin Seeds are farm-fresh and naturally aromatic. Known for their digestive benefits, they add warmth and earthy flavor to Indian cooking.',
+            longDescription: 'Aromatic Seeds for Flavor & Wellness\nChaitva Organic’s Cumin Seeds are farm-fresh and naturally aromatic. Known for their digestive benefits, they add warmth and earthy flavor to Indian cooking.',
             sensoryExperience: 'Nutty, peppery aroma with a sharp taste. Best for tempering curries, dals, or spiced rice.',
             image: 'cumin.jpeg',
             category: 'spices',
@@ -169,7 +169,7 @@ export class ProductDetailComponent {
             reviews: 41,
             shortDescription: 'SKU: COTP200GM',
             tags: 'Curcumin, Golden spice, Healing',
-            longDescription: 'The Golden Healer of Every Kitchen\nChaitva Organics’ Turmeric Powder is pure, potent, and loaded with curcumin. It strengthens immunity, reduces inflammation, and adds vibrant flavor to your dishes.',
+            longDescription: 'The Golden Healer of Every Kitchen\nChaitva Organic’s Turmeric Powder is pure, potent, and loaded with curcumin. It strengthens immunity, reduces inflammation, and adds vibrant flavor to your dishes.',
             sensoryExperience: 'Bright yellow color with a warm, earthy aroma. Enhances curries, lattes, and everyday cooking',
             image: 'Turmeric.jpeg',
             category: 'spices',
@@ -192,7 +192,7 @@ export class ProductDetailComponent {
             reviews: 21,
             shortDescription: 'SKU: COCORS100GM',
             tags: 'Fragrant, Cooling, Detox',
-            longDescription: 'Fragrant & Flavorful Kitchen Staple\nChaitva Organics’ Coriander Seeds are sun-dried for maximum aroma and flavor. Known to aid digestion and detox, they are a must-have spice for daily cooking.',
+            longDescription: 'Fragrant & Flavorful Kitchen Staple\nChaitva Organic’s Coriander Seeds are sun-dried for maximum aroma and flavor. Known to aid digestion and detox, they are a must-have spice for daily cooking.',
             sensoryExperience: 'Citrusy, sweet aroma with a mild taste. Ideal for spice blends, curries, and pickles.',
             image: 'corriander.jpeg',
             category: 'spices',
@@ -215,7 +215,7 @@ export class ProductDetailComponent {
             reviews: 31,
             shortDescription: 'SKU: COCIN100GM',
             tags: 'Sweet spice, Aromatic, Warmth',
-            longDescription: 'The Sweet Spice of Comfort\nChaitva Organics’ Cinnamon Sticks are pure, fragrant, and full of natural oils. A versatile spice that enhances both sweet and savory dishes.',
+            longDescription: 'The Sweet Spice of Comfort\nChaitva Organic’s Cinnamon Sticks are pure, fragrant, and full of natural oils. A versatile spice that enhances both sweet and savory dishes.',
             sensoryExperience: 'Sweet, woody aroma with a warm flavor. Perfect for curries, teas, and desserts.',
             image: 'cinnamon.jpeg',
             category: 'spices',
@@ -238,7 +238,7 @@ export class ProductDetailComponent {
             reviews: 24,
             shortDescription: 'SKU: COCHF200GM',
             tags: 'Spicy, Zesty, Fiery flavor',
-            longDescription: 'Add a Kick to Every Dish\nChaitva Organics’ Chilli Flakes are sun-dried, crushed, and packed to perfection. A sprinkle elevates pizzas, pastas, and curries with fiery zest.',
+            longDescription: 'Add a Kick to Every Dish\nChaitva Organic’s Chilli Flakes are sun-dried, crushed, and packed to perfection. A sprinkle elevates pizzas, pastas, and curries with fiery zest.',
             sensoryExperience: 'Aromatic, sharp heat that lingers on the palate. Perfect for seasoning or garnishing.',
             image: 'chill-fkakes.jpeg',
             category: 'spices',
@@ -261,7 +261,7 @@ export class ProductDetailComponent {
             reviews: 44,
             shortDescription: 'SKU: COCP200GM',
             tags: 'Aromatic, Strong brew, Energy booster',
-            longDescription: 'Awaken with Every Sip\nChaitva Organics’ Coffee Powder is made from premium beans roasted to perfection. It delivers an intense aroma and rich flavor that energizes your mornings.',
+            longDescription: 'Awaken with Every Sip\nChaitva Organic’s Coffee Powder is made from premium beans roasted to perfection. It delivers an intense aroma and rich flavor that energizes your mornings.',
             sensoryExperience: 'Strong, earthy aroma with a smooth finish. Perfect for filter coffee or black coffee lovers.',
             image: 'coffee-powder.jpeg',
             category: 'beverages',
@@ -284,7 +284,7 @@ export class ProductDetailComponent {
             reviews: 37,
             shortDescription: 'SKU: COTP200GM',
             tags: 'Aromatic, Energy, Morning ritual',
-            longDescription: 'Start Your Day with Rich Aroma & Energy\nChaitva Organics’ Tea Powder is carefully processed to preserve natural flavor and aroma. Brew a strong, refreshing cup that awakens your senses.',
+            longDescription: 'Start Your Day with Rich Aroma & Energy\nChaitva Organic’s Tea Powder is carefully processed to preserve natural flavor and aroma. Brew a strong, refreshing cup that awakens your senses.',
             sensoryExperience: 'Bold aroma with a smooth, full-bodied taste. Best enjoyed with milk or as a spiced chai.',
             image: 'Tea-powder.jpeg',
             category: 'beverages',
@@ -307,7 +307,7 @@ export class ProductDetailComponent {
             reviews: 35,
             shortDescription: 'SKU: COLM500GM',
             tags: 'Diabetic-friendly, Protein-rich, Light grain',
-            longDescription: 'The Perfect Light & Nutritious Millet\nChaitva Organics’ Little Millet is a light, easy-to-digest grain, perfect for weight management and diabetic-friendly diets. Rich in B-vitamins and minerals, it helps boost energy and supports overall wellness.',
+            longDescription: 'The Perfect Light & Nutritious Millet\nChaitva Organic’s Little Millet is a light, easy-to-digest grain, perfect for weight management and diabetic-friendly diets. Rich in B-vitamins and minerals, it helps boost energy and supports overall wellness.',
             sensoryExperience: 'Soft texture and mild flavor make it ideal for porridge, upma, or rice alternatives in everyday meals.',
             image: 'Little-millet.jpeg',
             category: 'millets',
@@ -331,7 +331,7 @@ export class ProductDetailComponent {
             reviews: 28,
             shortDescription: 'SKU: KOM500GM',
             tags: 'Low glycemic, Ancient grain, Wholesome',
-            longDescription: '\n₹80.00\n\nRated 4.7 out of 5\n28 reviews\n\nA Time-Tested Super Grain\nChaitva Organics’ Foxtail Millet is a low-glycemic grain rich in iron and calcium, perfect for heart health and diabetes management. Its versatility makes it a smart choice for modern kitchens rooted in tradition.',
+            longDescription: '\n₹80.00\n\nRated 4.7 out of 5\n28 reviews\n\nA Time-Tested Super Grain\nChaitva Organic’s Foxtail Millet is a low-glycemic grain rich in iron and calcium, perfect for heart health and diabetes management. Its versatility makes it a smart choice for modern kitchens rooted in tradition.',
             sensoryExperience: 'Nutty taste with a light, fluffy texture when cooked. Ideal for dosas, pulao, or as a healthy rice substitute.',
             image: 'prod-6.jpeg',
             category: 'millets',
@@ -355,7 +355,7 @@ export class ProductDetailComponent {
             reviews: 28,
             shortDescription: 'SKU: COFM500GM',
             tags: 'Low glycemic, Ancient grain, Wholesome',
-            longDescription: 'A Time-Tested Super Grain\nChaitva Organics’ Foxtail Millet is a low-glycemic grain rich in iron and calcium, perfect for heart health and diabetes management. Its versatility makes it a smart choice for modern kitchens rooted in tradition.',
+            longDescription: 'A Time-Tested Super Grain\nChaitva Organic’s Foxtail Millet is a low-glycemic grain rich in iron and calcium, perfect for heart health and diabetes management. Its versatility makes it a smart choice for modern kitchens rooted in tradition.',
             sensoryExperience: 'Nutty taste with a light, fluffy texture when cooked. Ideal for dosas, pulao, or as a healthy rice substitute.',
             image: 'foxtail.jpeg',
             category: 'millets',
@@ -472,7 +472,7 @@ export class ProductDetailComponent {
             reviews: 20,
             shortDescription: 'SKU: COLOO',
             tags: 'Exfoliating, Natural fiber, Sustainable',
-            longDescription: 'Natural Exfoliation for Radiant Skin\nChaitva Organics’ Loofah is made from natural plant fibers. It gently exfoliates, removes dead skin, and stimulates circulation for glowing skin.',
+            longDescription: 'Natural Exfoliation for Radiant Skin\nChaitva Organic’s Loofah is made from natural plant fibers. It gently exfoliates, removes dead skin, and stimulates circulation for glowing skin.',
             sensoryExperience: 'Slightly coarse texture that softens when wet. Leaves skin smooth and refreshed.',
             image: 'loofah.jpeg',
             category: 'personal',
@@ -495,7 +495,7 @@ export class ProductDetailComponent {
             reviews: 18,
             shortDescription: 'SKU: COTBNEEM',
             tags: 'Natural, Sustainable, Herbal care',
-            longDescription: 'Gentle Oral Care the Natural Way\nChaitva Organics’ Neem Toothbrush is eco-friendly and naturally antibacterial. It supports oral hygiene without harsh chemicals or plastics.',
+            longDescription: 'Gentle Oral Care the Natural Way\nChaitva Organic’s Neem Toothbrush is eco-friendly and naturally antibacterial. It supports oral hygiene without harsh chemicals or plastics.',
             sensoryExperience: 'Soft bristles with a refreshing herbal feel, leaving your mouth clean and fresh.',
             image: 'prod-8.jpeg',
             category: 'personal',
@@ -564,7 +564,7 @@ export class ProductDetailComponent {
             reviews: 33,
             shortDescription: 'SKU: COEO',
             tags: 'Soothing, Anti-inflammatory, Healing',
-            longDescription: 'Nature’s Breathe-Easy Oil\nChaitva Organics’ Eucalyptus Oil is pure and potent, ideal for aromatherapy, cold relief, and muscle relaxation. Known for its cooling, soothing properties.',
+            longDescription: 'Nature’s Breathe-Easy Oil\nChaitva Organic’s Eucalyptus Oil is pure and potent, ideal for aromatherapy, cold relief, and muscle relaxation. Known for its cooling, soothing properties.',
             sensoryExperience: 'Strong, refreshing aroma with a cooling sensation. Perfect for steam inhalation, massage, or diffuser use.',
             image: 'prod-6.jpeg',
             category: 'personal',
@@ -587,7 +587,7 @@ export class ProductDetailComponent {
             reviews: 29,
             shortDescription: 'SKU: COSWS',
             tags: 'Aromatic, Calming, Traditional care',
-            longDescription: 'The Essence of Calm & Tradition\nChaitva Organics’ Sandalwood Soap is infused with pure sandalwood oil for a calming, aromatic bathing experience. It nourishes skin while leaving a lingering fragrance.',
+            longDescription: 'The Essence of Calm & Tradition\nChaitva Organic’s Sandalwood Soap is infused with pure sandalwood oil for a calming, aromatic bathing experience. It nourishes skin while leaving a lingering fragrance.',
             sensoryExperience: 'Rich aroma with creamy lather. Promotes relaxation and leaves skin silky smooth.',
             image: 'sandlewood.jpeg',
             category: 'personal',
@@ -610,7 +610,7 @@ export class ProductDetailComponent {
             reviews: 25,
             shortDescription: 'SKU: COAVS',
             tags: 'Moisturizing, Cooling, Gentle care',
-            longDescription: 'Gentle Nourishment with Aloe Goodness\nChaitva Organics’ Aloe Vera Soap hydrates, soothes, and refreshes your skin. Enriched with aloe extracts for everyday gentle care.',
+            longDescription: 'Gentle Nourishment with Aloe Goodness\nChaitva Organic’s Aloe Vera Soap hydrates, soothes, and refreshes your skin. Enriched with aloe extracts for everyday gentle care.',
             sensoryExperience: 'Soft lather with a cooling feel. Leaves your skin refreshed, smooth, and moisturized.',
             image: 'prod-10.jpeg',
             category: 'personal',
@@ -633,7 +633,7 @@ export class ProductDetailComponent {
             reviews: 38,
             shortDescription: 'SKU: COHS',
             tags: 'Anti-hair fall, Natural shine, Herbal',
-            longDescription: 'Nature’s Answer to Healthy Hair\nChaitva Organics’ Herbal Shampoo is enriched with natural extracts that reduce hair fall, cleanse gently, and restore natural shine.',
+            longDescription: 'Nature’s Answer to Healthy Hair\nChaitva Organic’s Herbal Shampoo is enriched with natural extracts that reduce hair fall, cleanse gently, and restore natural shine.',
             sensoryExperience: 'Foams softly with a refreshing herbal aroma. Leaves hair soft, bouncy, and fresh.',
             image: 'prod-11.jpeg',
             category: 'personal',
@@ -671,7 +671,8 @@ export class ProductDetailComponent {
         }
     ]
 
-    constructor(private route: ActivatedRoute, private cartService: CartService, private router: Router) { }
+    constructor(private route: ActivatedRoute, private cartService: CartService,
+        private router: Router, private cdr: ChangeDetectorRef) { }
 
     ngOnInit() {
         this.productId = this.route.snapshot.paramMap.get('id')!;
@@ -693,7 +694,11 @@ export class ProductDetailComponent {
     addToCart() {
         const itemWithQuantity = { ...this.product, quantity: this.quantity };
         this.cartService.addToCart(itemWithQuantity);
-        // this.router.navigate(['/cart']);
+        this.showAdded = true;
+        setTimeout(() => {
+            this.showAdded = false;
+            this.cdr.detectChanges();
+        }, 1000);
     }
     isInCart(productId: string): boolean {
         return this.cartItems.some(item => item.id === productId);

@@ -60,17 +60,18 @@
                     <i class="fa fa-shopping-bag me-2"></i>
                     Add to Cart
                 </button>
+                <span *ngIf="showAdded" class="added-badge">
+                    <i class="fa fa-check-circle"></i> Added to Cart
+                </span>
+            </div>
+            <div class="product-description mt-3">
+                <h3>Product Details</h3>
+                <p>{{ product.longDescription }}</p>
+
+                <h4>Sensory Experience:</h4>
+                <p> {{ product.sensoryExperience }}
+                </p>
             </div>
         </div>
-    </div>
-
-    <!-- Long Description -->
-    <div class="product-description mt-3">
-        <h3>Product Details</h3>
-        <p>{{ product.longDescription }}</p>
-
-        <h4>Sensory Experience:</h4>
-        <p> {{ product.sensoryExperience }}
-        </p>
     </div>
 </div>
