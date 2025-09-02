@@ -20,28 +20,46 @@
             <span>OR</span>
         </div>
 
-        <!-- UPI Link Section -->
-        <div class="link-section">
-            <ng-container *ngIf="upiLink; else loading">
-                <a [href]="upiLink" target="_blank">
-                    <button class="upi-button">Pay Now via UPI App</button>
+        <ng-container *ngIf="paymentLinks.default; else loading">
+            <div class="upi-grid">
+                <a [href]="paymentLinks.default" target="_blank" class="upi-card default">
+                    <img src="/assets/img/upi.svg" alt="UPI" class="upi-icon" />
+                    <span>UPI</span>
                 </a>
-            </ng-container>
-        </div>
+                <a [href]="paymentLinks.phonepe" target="_blank" class="upi-card phonepe">
+                    <img src="/assets/img/phonepay.svg" alt="PhonePe" class="upi-icon" />
+                    <span>PhonePe</span>
+                </a>
+                <a [href]="paymentLinks.gpay" target="_blank" class="upi-card gpay">
+                    <img src="/assets/img/gpay.svg" alt="Google Pay" class="upi-icon" />
+                    <span>Google Pay</span>
+                </a>
+                <a [href]="paymentLinks.paytm" target="_blank" class="upi-card paytm">
+                    <img src="/assets/img/paytm.svg" alt="Paytm" class="upi-icon" />
+                    <span>Paytm</span>
+                </a>
+            </div>
+        </ng-container>
+        <ng-template #loading>
+            <p>Loading payment options...</p>
+        </ng-template>
+
+
     </div>
 
-    <!-- Loading Template -->
-    <ng-template #loading>
-        <p>Waiting for payment details...</p>
-    </ng-template>
+</div>
 
-    <!-- Upload Section -->
-    <div class="upload-section">
-        <label for="screenshotUpload">Upload Payment Screenshot:</label>
-        <input type="file" id="screenshotUpload" (change)="onFileSelected($event)" />
+<!-- Loading Template -->
+<ng-template #loading>
+    <p>Waiting for payment details...</p>
+</ng-template>
 
-        <button (click)="finalOrder()" [disabled]="isSubmitting">
-            {{ isSubmitting ? 'Submitting...' : 'Submit' }}
-        </button>
-    </div>
+<!-- Upload Section -->
+<div class="upload-section">
+    <label for="screenshotUpload">Upload Payment Screenshot:</label>
+    <input type="file" id="screenshotUpload" (change)="onFileSelected($event)" />
+
+    <button (click)="finalOrder()" [disabled]="isSubmitting">
+        {{ isSubmitting ? 'Submitting...' : 'Submit' }}
+    </button>
 </div>

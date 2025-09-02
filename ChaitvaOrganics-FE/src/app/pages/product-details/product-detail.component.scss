@@ -1,15 +1,16 @@
 .product-details-page {
     display: flex;
-    gap: 2rem;
-    padding: 2rem;
+    gap: 3rem;
     flex-wrap: wrap;
+    padding: 2rem 0;
 
     .product-image {
         flex: 1;
 
         img {
             max-width: 100%;
-            border-radius: 8px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         }
     }
 
@@ -20,41 +21,32 @@
         gap: 1rem;
 
         h1 {
-            font-size: 1.8rem;
-            font-weight: bold;
+            font-size: 2rem;
+            font-weight: 700;
+        }
+
+        .reviews {
+            font-size: 1rem;
+            color: #555;
+
+            .count {
+                margin-left: 0.5rem;
+            }
         }
 
         .price {
-            font-size: 1.5rem;
+            font-size: 1.8rem;
+            font-weight: 600;
             color: #222;
 
             .amount {
-                font-weight: bold;
+                color: #ff6f1a;
             }
 
             small {
                 display: block;
                 font-size: 0.9rem;
-                color: #555;
-            }
-        }
-
-        .variants {
-            display: flex;
-            gap: 0.5rem;
-
-            button {
-                padding: 0.5rem 1rem;
-                border: 1px solid #ccc;
-                border-radius: 4px;
-                background: #fff;
-                cursor: pointer;
-
-                &.active {
-                    background: #f97316;
-                    color: white;
-                    border-color: #f97316;
-                }
+                color: #666;
             }
         }
 
@@ -64,54 +56,67 @@
             gap: 1rem;
 
             button {
-                width: 32px;
-                height: 32px;
+                width: 36px;
+                height: 36px;
                 border: 1px solid #ccc;
-                border-radius: 4px;
+                border-radius: 6px;
                 background: #f9f9f9;
                 cursor: pointer;
+                font-size: 1.2rem;
+            }
+
+            span {
+                font-size: 1.2rem;
+                min-width: 20px;
+                text-align: center;
             }
         }
 
-        .actions {
+        .cart-section {
             display: flex;
             gap: 1rem;
+            align-items: center;
 
-            .add-to-cart {
-                padding: 0.8rem 2rem;
+            .add-to-cart-btn {
                 background: #ff6f1a;
-                color: white;
-                border-radius: 6px;
+                color: #fff;
                 border: none;
-                cursor: pointer;
-            }
-
-            .buy-now {
                 padding: 0.8rem 2rem;
-                background: #f97316;
-                color: white;
-                border-radius: 6px;
-                border: none;
+                border-radius: 30px;
+                font-weight: 600;
                 cursor: pointer;
-            }
-        }
 
-        .related {
-            margin-top: 2rem;
-
-            .related-item {
-                display: flex;
-                align-items: center;
-                gap: 0.5rem;
-                margin-top: 0.5rem;
-
-                img {
-                    width: 40px;
-                    height: 40px;
-                    border-radius: 4px;
+                &:disabled {
+                    background: #ccc;
+                    cursor: not-allowed;
                 }
             }
+
+            .buy-now-btn {
+                background: #f97316;
+                color: #fff;
+                border: none;
+                padding: 0.8rem 2rem;
+                border-radius: 30px;
+                font-weight: 600;
+                cursor: pointer;
+            }
         }
+    }
+}
+
+.product-description {
+    padding: 1rem 0;
+
+    h3 {
+        margin-bottom: 1rem;
+        font-size: 1.5rem;
+        font-weight: bold;
+    }
+
+    p {
+        margin-bottom: 0.5rem;
+        line-height: 1.6;
     }
 }
 
@@ -122,63 +127,216 @@
     }
 }
 
-.add-to-cart-btn {
-    background-color: #ff914d;
-    /* Or any brand color */
-    color: white;
-    border: none;
-    padding: 10px 16px;
-    border-radius: 20px;
-    /* Makes it pill-shaped */
-    font-weight: 600;
-    font-size: 14px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    white-space: nowrap;
-    /* keeps text in one line */
+.product-detail {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    gap: 2rem;
+    align-items: start;
+    padding: 2rem;
 
-    &:disabled {
-        background-color: #ccc;
-        cursor: not-allowed;
+    .image-wrapper {
+        img {
+            width: 100%;
+            max-width: 400px;
+            border-radius: 12px;
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
+            transition: transform 0.3s ease;
+
+            &:hover {
+                transform: scale(1.03);
+            }
+        }
+    }
+
+    .info-wrapper {
+        .product-name {
+            font-size: 2rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #2e2e2e;
+        }
+
+        .price {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #2d7a2d;
+            margin-bottom: 0.5rem;
+        }
+
+        .rating {
+            font-size: 1rem;
+            color: #555;
+            margin-bottom: 1rem;
+        }
+
+        .long-description {
+            font-size: 1rem;
+            line-height: 1.6;
+            color: #444;
+            margin-bottom: 1.5rem;
+        }
+
+        .sensory {
+            background: #f8f8f8;
+            padding: 1rem;
+            border-left: 4px solid #2d7a2d;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+
+            h4 {
+                font-size: 1.1rem;
+                font-weight: 600;
+                margin-bottom: 0.5rem;
+                color: #333;
+            }
+
+            p {
+                font-size: 0.95rem;
+                color: #555;
+            }
+        }
+
+        /* Discount Card */
+        .discount-card {
+            display: flex;
+            align-items: center;
+            background: linear-gradient(135deg, #2d7a2d, #44a844);
+            color: #fff;
+            padding: 1.2rem;
+            border-radius: 12px;
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+            animation: fadeIn 0.6s ease-in-out;
+
+            .coupon-icon {
+                font-size: 2rem;
+                margin-right: 1rem;
+            }
+
+            .coupon-content {
+                h3 {
+                    margin: 0;
+                    font-size: 1.3rem;
+                    font-weight: 600;
+                }
+
+                p {
+                    margin: 0.3rem 0 0;
+                    font-size: 0.95rem;
+                    opacity: 0.9;
+                }
+            }
+        }
     }
 }
 
-.cart-section {
+/* Animation */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.rating-reviews {
     display: flex;
     align-items: center;
-    gap: 8px;
-    /* space between button and text */
-}
+    gap: 0.7rem;
+    margin-bottom: 1rem;
 
-.added-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    background-color: #e6f9ed;
-    /* soft green bg */
-    color: #28a745;
-    /* fresh green text */
-    font-weight: 600;
-    font-size: 14px;
-    padding: 6px 12px;
-    border-radius: 20px;
-    animation: popIn 0.4s ease;
-}
+    .star-group {
+        color: #ffa726;
+        font-size: 1.1rem;
 
-.added-badge i {
-    color: #28a745;
-    font-size: 16px;
-}
-
-@keyframes popIn {
-    0% {
-        transform: scale(0.8);
-        opacity: 0;
+        i {
+            margin-right: 1px;
+        }
     }
 
-    100% {
-        transform: scale(1);
-        opacity: 1;
+    .rating-value {
+        font-weight: 600;
+        color: #222;
+        font-size: 1rem;
+    }
+
+    .review-count {
+        color: #555;
+        font-size: 0.96rem;
+        background: #ffe8c6;
+        border-radius: 4px;
+        padding: 0.15rem 0.35rem;
+        border: 1px solid #ffd299;
+        margin-left: 0.3rem;
+        font-weight: 500;
+    }
+}
+
+.discount-card {
+    display: flex;
+    align-items: center;
+    background: linear-gradient(135deg, #ffe0b2, #fff8e1);
+    color: #c96a00;
+    padding: 1.2rem 1rem;
+    border-radius: 12px;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.09);
+    margin: 1.5rem 0 1rem 0;
+    border: 2px dashed #ff9800;
+
+    .coupon-icon {
+        font-size: 2.2rem;
+        margin-right: 1.2rem;
+        color: #ff9800;
+        background: #fff;
+        border-radius: 50%;
+        width: 2.3rem;
+        height: 2.3rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 2px 6px rgba(255, 152, 0, 0.08);
+    }
+
+    .coupon-content {
+        display: flex;
+        flex-direction: column;
+
+        .delivery-value {
+            font-size: 1.15rem;
+            font-weight: 700;
+            margin-bottom: 0.3rem;
+        }
+
+        .delivery-sub {
+            font-size: 0.95rem;
+            color: #ad5900;
+        }
+    }
+}
+
+.product-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 1.2rem;
+
+    .tag-pill {
+        font-size: 0.82rem;
+        border: 1.5px solid #e0e0e0;
+        padding: 0.22rem 0.8rem;
+        border-radius: 16px;
+        background: #ffa726;
+        color: #555;
+        font-weight: 500;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+        margin-bottom: 0.2rem;
+        transition: border 0.2s;
+
+        &:hover {
+            border-color: #ffa726;
+        }
     }
 }

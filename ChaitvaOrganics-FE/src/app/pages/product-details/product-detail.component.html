@@ -7,14 +7,41 @@
 
         <!-- RIGHT: Product Info -->
         <div class="product-info">
-            <h1>{{ product.name }}</h1>
-            <!-- <div class="reviews">
-            ⭐⭐⭐⭐⭐ <span>{{ product.reviews }} reviews</span>
-        </div> -->
+            <h2 class="product-name">{{ product.name }}</h2>
+            <p class="price">₹{{ product.price }}</p>
 
-            <div class="price">
-                <span class="amount">₹{{ product.price }}</span>
-                <small>Tax included. Shipping calculated at checkout</small>
+            <!-- REVIEWS & RATING SECTION -->
+            <div class="rating-reviews">
+                <span class="star-group">
+                    <ng-container *ngFor="let s of getStarArray(product.rating)">
+                        <i class="fa" [class.fa-star]="isFullStar(s, product.rating)"
+                            [class.fa-star-half-o]="isHalfStar(s, product.rating)"
+                            [class.fa-star-o]="isEmptyStar(s, product.rating)">
+                        </i>
+                    </ng-container>
+                </span>
+                <span class="rating-value">
+                    {{ product.rating }}
+                </span>
+                <span class="review-count">
+                    ({{ product.reviews }} reviews)
+                </span>
+            </div>
+
+            <!-- TAGS & KEYWORDS -->
+            <div class="product-tags">
+                <ng-container *ngFor="let tag of product.keywords">
+                    <span class="tag-pill">{{ tag }}</span>
+                </ng-container>
+            </div>
+
+            <!-- FREE DELIVERY CARD (styled like second screen) -->
+            <div class="discount-card">
+                <div class="coupon-icon"><i class="fa fa-ticket"></i></div>
+                <div class="coupon-content">
+                    <div class="delivery-value">FREE DELIVERY ABOVE Rs 999</div>
+                    <div class="delivery-sub">Delivered in 2-5 working days</div>
+                </div>
             </div>
 
             <!-- Quantity -->
@@ -27,16 +54,23 @@
                 </div>
             </div>
 
-            <!-- Actions -->
-            <div class="cart-section w-100 py-2">
+            <!-- Cart & Buy Now -->
+            <div class="cart-section py-3">
                 <button [disabled]="isInCart(product.id)" class="add-to-cart-btn" (click)="addToCart()">
-                    <i class="fa fa-shopping-bag text-primary me-2"></i>Add to cart
+                    <i class="fa fa-shopping-bag me-2"></i>
+                    {{ isInCart(product.id) ? 'Added to Cart' : 'Add to Cart' }}
                 </button>
-
-                <span *ngIf="isInCart(product.id)" class="added-badge">
-                    <i class="fa fa-check-circle"></i> Added
-                </span>
             </div>
         </div>
+    </div>
+
+    <!-- Long Description -->
+    <div class="product-description mt-3">
+        <h3>Product Details</h3>
+        <p>{{ product.longDescription }}</p>
+
+        <h4>Sensory Experience:</h4>
+        <p> {{ product.sensoryExperience }}
+        </p>
     </div>
 </div>

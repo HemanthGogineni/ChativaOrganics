@@ -5,10 +5,11 @@ import { MenuComponent } from './components/menu/menu.component';
 import { ProductComponent } from './pages/products/product.component';
 import { HomeComponent } from './pages/home/home.component';
 import { ProductDetailComponent } from './pages/product-details/product-detail.component';
+import { PlaceOrderComponent } from './pages/place-order/place-order.component';
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, FooterComponent, MenuComponent, ProductComponent, HomeComponent, ProductDetailComponent],
+  imports: [RouterOutlet, FooterComponent, MenuComponent, ProductComponent, HomeComponent, ProductDetailComponent, PlaceOrderComponent],
   templateUrl: './app.html',
   styleUrl: './app.css',
 })

@@ -13,7 +13,7 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
 export class PlaceOrderComponent implements OnInit {
 
   qrImageBase64: string | null = null;
-  upiLink: string | null = null;
+  upiLink: string | URL = '';
   showPaymentUI = false;
   cartItems: any[] = [];
   total: number = 0;
@@ -23,6 +23,9 @@ export class PlaceOrderComponent implements OnInit {
   showModal = true;
   modalTitle = '';
   modalMessage = '';
+  paymentLinks: { default: string | URL; phonepe: string; gpay: string; paytm: string; } = { default: '', phonepe: '', gpay: '', paytm: '' }
+    ;
+
 
   constructor(
     private orderService: OrderDataService,
@@ -41,12 +44,20 @@ export class PlaceOrderComponent implements OnInit {
     this.checkoutData = data.checkoutData;
 
     this.http.get<{
-      upiLink: string | null;
+      upiLink: string | URL;
       qrImageBytes: string;
     }>(`https://www.chaitvaorganics.com/api/checkout/getPaymentDetails?amount=${this.total}`).subscribe(res => {
       this.ngZone.run(() => {
         this.qrImageBase64 = res.qrImageBytes;
         this.upiLink = res.upiLink;
+        const url = new URL(res.upiLink);
+        const params = url.searchParams.toString(); // pa=...&pn=...&am=...&tn=...&cu=...
+        this.paymentLinks = {
+          default: this.upiLink,
+          phonepe: `https://phon.pe/pay?${params}`,
+          gpay: `https://gpay.app.goo.gl/pay?${params}`,
+          paytm: `paytm://pay?${params}`
+        };
         this.showPaymentUI = true;
         this.cdr.detectChanges();
       });

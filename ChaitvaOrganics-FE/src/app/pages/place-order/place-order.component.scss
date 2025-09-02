@@ -3,8 +3,63 @@
   align-items: center;
   justify-content: center;
   gap: 24px;
-  margin: 40px 0;
+  margin: 20px 0; // reduced from 40px
   flex-wrap: wrap;
+
+  .upi-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    gap: 20px;
+    width: 100%;
+    max-width: 420px;
+  }
+
+  .upi-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 22px;
+    border-radius: 12px;
+    background: #fff;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.10);
+    font-weight: 500;
+    font-size: 16px;
+    color: #333;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+    .upi-icon {
+      width: 40px;
+      height: 40px;
+    }
+
+    &:hover {
+      transform: translateY(-5px) scale(1.03);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+    }
+
+    &.default {
+      background: linear-gradient(135deg, #52ba6d, #31a252);
+      color: #fff;
+    }
+
+    &.phonepe {
+      background: linear-gradient(135deg, #6f42c1, #9D50BB);
+      color: #fff;
+    }
+
+    &.gpay {
+      background: linear-gradient(135deg, #4285f4, #0f9d58);
+      color: #fff;
+    }
+
+    &.paytm {
+      background: linear-gradient(135deg, #00baf2, #002970);
+      color: #fff;
+    }
+  }
 }
 
 .qr-section img {
@@ -14,22 +69,6 @@
 
 .link-section {
   text-align: center;
-}
-
-.upi-button {
-  padding: 10px 16px;
-  font-size: 15px;
-  font-weight: 500;
-  background-color: #ff6f1a;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.upi-button button:hover {
-  background-color: #ff5e00;
 }
 
 .or-divider {
@@ -53,9 +92,12 @@
   padding: 6px;
 }
 
+/* Upload Section - moved up */
 .upload-section {
-  margin-top: 40px;
-  padding: 20px;
+  margin-top: 10px; // reduced
+  margin-bottom: 20px; // reduced
+
+  padding: 16px;
   border: 1px solid #ddd;
   border-radius: 12px;
   background-color: #f9f9f9;
@@ -94,6 +136,7 @@
   background-color: #ff5e00;
 }
 
+/* Modal */
 .modal-backdrop {
   position: fixed;
   top: 0;
@@ -125,10 +168,12 @@
   cursor: pointer;
 }
 
+/* Mobile Fix */
 @media (max-width: 576px) {
   .upi-container {
     flex-direction: column;
     gap: 12px;
+    margin-bottom: 10px; // tighter on mobile
   }
 
   .or-divider {
