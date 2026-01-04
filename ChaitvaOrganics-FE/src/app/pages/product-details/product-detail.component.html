@@ -1,0 +1,143 @@
+<div class="container-xxl py-6">
+  <nav class="breadcrumbs mb-3" aria-label="Breadcrumb">
+    <a routerLink="/" class="crumb">Home</a>
+    <span class="sep">›</span>
+    <a routerLink="/products" class="crumb">Products</a>
+    <span class="sep">›</span>
+    <span class="crumb current" aria-current="page">{{ product.name }}</span>
+  </nav>
+  <div class="product-details-page" [@detail]>
+    <!-- LEFT: Product Image -->
+    <div class="product-image">
+      <div class="surface rounded-xl p-4 image-shell" [class.is-loading]="!imageLoaded" [attr.aria-busy]="!imageLoaded">
+        <div class="skeleton" *ngIf="!imageLoaded" aria-hidden="true"></div>
+        <img
+          class="img-fluid w-100 product-img clickable"
+          [src]="'assets/img/product-imgs/' + currentImage"
+          [alt]="product.name"
+          width="700"
+          height="700"
+          decoding="async"
+          fetchpriority="high"
+          (load)="onImageLoad()"
+          (error)="onImageError()"
+          (click)="openZoom()"
+          [class.visible]="imageLoaded"
+        />
+      </div>
+    <!-- Thumbnails -->
+    <div class="thumbs mt-3" *ngIf="(galleryImages?.length || 0) > 1">
+      <button
+        type="button"
+        class="thumb-button"
+        *ngFor="let img of galleryImages; let i = index"
+        [class.active]="i === selectedIndex"
+        (click)="selectImage(i)"
+        [attr.aria-label]="'View image ' + (i + 1)">
+        <img
+          [src]="'assets/img/product-imgs/' + img"
+          [alt]="product.name + ' thumbnail ' + (i + 1)"
+          loading="lazy"
+          decoding="async" />
+      </button>
+    </div>
+
+    </div>
+
+    <!-- RIGHT: Product Info -->
+    <div class="product-info sticky-box">
+      <h2 class="product-name">{{ product.name }}</h2>
+
+      <div class="d-flex align-items-center gap-3">
+        <p class="price m-0">₹{{ product.price }}</p>
+        <div class="rating-reviews">
+          <span class="star-group">
+            <ng-container *ngFor="let s of getStarArray(product.rating)">
+              <i
+                class="fa"
+                [class.fa-star]="isFullStar(s, product.rating)"
+                [class.fa-star-half-o]="isHalfStar(s, product.rating)"
+                [class.fa-star-o]="isEmptyStar(s, product.rating)">
+              </i>
+            </ng-container>
+          </span>
+          <span class="rating-value">{{ product.rating }}</span>
+          <span class="review-count">({{ product.reviews }} reviews)</span>
+        </div>
+      </div>
+
+      <!-- TAGS -->
+      <div class="product-tags">
+        <ng-container *ngFor="let tag of product.keywords">
+          <span class="tag-pill">{{ tag }}</span>
+        </ng-container>
+      </div>
+
+      <!-- Free Delivery / Offer -->
+      <div class="discount-card">
+        <div class="coupon-icon"><i class="fa fa-ticket"></i></div>
+        <div class="coupon-content">
+          <div class="delivery-value">FREE DELIVERY ABOVE Rs 999</div>
+          <div class="delivery-sub">Delivered in 2-5 working days</div>
+        </div>
+      </div>
+
+      <!-- Quantity -->
+      <div class="quantity">
+        <h4 class="mb-2">Quantity</h4>
+        <div class="quantity-box">
+          <button (click)="decrement()">-</button>
+          <span>{{ quantity }}</span>
+          <button (click)="increment()">+</button>
+        </div>
+      </div>
+
+      <!-- Actions -->
+      <div class="cart-section py-3 d-flex align-items-center gap-3">
+        <button class="add-to-cart-btn" (click)="addToCart()">
+          <i class="fa fa-shopping-bag me-2"></i>
+          Add to Cart
+        </button>
+        <span *ngIf="showAdded" class="added-badge">
+          <i class="fa fa-check-circle"></i> Added to Cart
+        </span>
+      </div>
+
+      <div class="visually-hidden" aria-live="polite">{{ showAdded ? 'Added to cart' : '' }}</div>
+
+      <div class="trust-badges mt-3">
+        <div class="badge-item"><i class="fa fa-leaf"></i> 100% Organic</div>
+        <div class="badge-item"><i class="fa fa-shield"></i> Secure Payments</div>
+        <div class="badge-item"><i class="fa fa-truck"></i> Pan India Delivery</div>
+      </div>
+
+      <!-- Description -->
+      <div class="product-description mt-3 surface rounded-xl p-4">
+        <h3>Product Details</h3>
+        <p>{{ product.longDescription }}</p>
+
+        <h4 class="mt-3">Sensory Experience:</h4>
+        <p>{{ product.sensoryExperience }}</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Zoom Modal -->
+  <div class="zoom-modal" *ngIf="zoomOpen" role="dialog" aria-modal="true" aria-label="Image zoom view">
+    <div class="zoom-backdrop" (click)="closeZoom()"></div>
+    <div class="zoom-content">
+      <img [src]="'assets/img/product-imgs/' + currentImage" [alt]="product.name" />
+      <button class="zoom-close" type="button" (click)="closeZoom()" aria-label="Close zoom">
+        &times;
+      </button>
+    </div>
+  </div>
+
+  <!-- Mobile Sticky CTA -->
+  <div class="mobile-sticky-cta">
+    <div class="price">₹{{ product.price }}</div>
+    <button class="add-to-cart-btn" (click)="addToCart()" attr.aria-label="Add {{ product.name }} to cart">
+      <i class="fa fa-shopping-bag me-2"></i> Add to Cart
+    </button>
+  </div>
+</div>

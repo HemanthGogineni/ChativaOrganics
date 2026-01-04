@@ -1,0 +1,814 @@
+import { ChangeDetectorRef, Component } from '@angular/core';
+import { trigger, transition, style, animate, query, stagger } from '@angular/animations';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
+import { CommonModule } from '@angular/common';
+import { CartService } from '../cart/cart.service';
+
+@Component({
+    selector: 'app-product-detail',
+    standalone: true,
+    imports: [CommonModule, RouterModule],
+    templateUrl: './product-detail.component.html',
+    styleUrls: ['./product-detail.component.scss'],
+    animations: [
+        trigger('detail', [
+            transition(':enter', [
+                query('.product-image', [
+                    style({ opacity: 0, transform: 'translateY(12px) scale(0.98)' }),
+                    animate('420ms 40ms cubic-bezier(0.22, 1, 0.36, 1)', style({ opacity: 1, transform: 'none' }))
+                ], { optional: true }),
+                query('.product-info', [
+                    style({ opacity: 0, transform: 'translateY(12px)' }),
+                    animate('420ms 80ms cubic-bezier(0.22, 1, 0.36, 1)', style({ opacity: 1, transform: 'none' }))
+                ], { optional: true }),
+                query('.product-tags .tag-pill', [
+                    style({ opacity: 0, transform: 'translateY(6px)' }),
+                    stagger(50, animate('240ms 60ms ease-out', style({ opacity: 1, transform: 'none' })))
+                ], { optional: true }),
+                query('.discount-card', [
+                    style({ opacity: 0, transform: 'translateY(10px)' }),
+                    animate('360ms 120ms cubic-bezier(0.22, 1, 0.36, 1)', style({ opacity: 1, transform: 'none' }))
+                ], { optional: true })
+            ])
+        ])
+    ]
+})
+export class ProductDetailComponent {
+    productId!: string;
+    product: any;
+    quantity = 1;
+    cartItems: any[] = [];
+    showAdded = false;
+    imageLoaded = false;
+
+    // gallery and zoom state
+    galleryImages: string[] = [];
+    selectedIndex = 0;
+    zoomOpen = false;
+    private imageLoadTimeout: any;
+
+    products = [
+        {
+            id: '1',
+            name: 'Black Rice (1kg)',
+            price: 290,
+            sku: 'COBLR1KG',
+            currency: 'INR',
+            rating: 5.0,
+            reviews: 32,
+            shortDescription: 'SKU: COBLR1KG',
+            tags: 'Forbidden rice, High protein, Anthocyanins',
+            longDescription: 'The Superfood Grain of Royalty\nKnown as the “forbidden rice,” Chaitva Organic’s Black Rice is loaded with antioxidants, protein, and fiber. Its deep purple hue comes from anthocyanins, which support heart health and immunity while adding rich flavor to your meals.',
+            sensoryExperience: 'Delight in its mildly sweet, nutty flavor and chewy texture. Perfect for rice bowls, puddings, or nutrient-packed side dishes.',
+            image: 'black-rice.jpeg',
+            category: 'rice',
+            keywords: [
+                'Superfoods',
+                'Grains',
+                'Antioxidant-rich',
+                'Wellness Essentials',
+                'Forbidden rice',
+                'High protein',
+                'Anthocyanins'
+            ]
+        },
+        {
+            id: '2',
+            name: 'Red Rice (1Kg)',
+            price: 120,
+            sku: 'CORR1KG',
+            currency: 'INR',
+            rating: 4.7,
+            reviews: 29,
+            shortDescription: 'SKU: CORR1KG',
+            tags: 'Iron-rich, Traditional, Whole grain',
+            longDescription: 'A Rustic Grain Packed with Strength\nChaitva Organic’s Red Rice is a powerhouse of iron and antioxidants, supporting better digestion and immunity. Traditionally consumed in many cultures, it’s the perfect mix of nutrition and taste for everyday cooking.',
+            sensoryExperience: 'Revel in its earthy flavor and hearty bite. Ideal for preparing porridges, idlis, or paired with curries for a wholesome meal.',
+            image: 'red-rice.jpeg',
+            category: 'rice',
+            keywords: [
+                'Traditional Grains',
+                'Healthy Staples',
+                'Immunity Boosting',
+                'High-Fiber Foods',
+                'Iron-rich',
+                'Traditional',
+                'Whole grain'
+            ]
+        },
+        {
+            id: '3',
+            name: 'Brown Rice(1kg)',
+            price: 120,
+            sku: 'COBR1KG',
+            currency: 'INR',
+            rating: 4.8,
+            reviews: 43,
+            shortDescription: 'SKU: COBR1KG',
+            tags: 'Whole grain, Fiber-rich, Natural nutrition',
+            longDescription: 'Wholesome Goodness in Every Grain\nChaitva Organic’s Brown Rice is unpolished and naturally rich in fiber, vitamins, and minerals. It supports digestion, balances energy release, and makes a hearty base for your everyday meals. Packed straight from organic farms, it brings earthy flavor and nourishment to your plate.',
+            sensoryExperience: 'Enjoy the nutty aroma and firm texture with every bite. Pairs well with curries, stir-fries, or as a healthier alternative to white rice for daily meals.',
+            image: 'brown-rice.jpeg',
+            category: 'rice',
+            keywords: [
+                'Grains',
+                'Organic Staples',
+                'Everyday Essentials',
+                'Gluten-Free',
+                'Healthy Eating',
+                'Whole grain',
+                'Fiber-rich',
+                'Natural nutrition'
+            ]
+        },
+        {
+            id: '4',
+            name: 'Kerala Vadi Matta Rice(1Kg)',
+            price: 120,
+            sku: 'COKVMR1KG',
+            currency: 'INR',
+            rating: 4.8,
+            reviews: 22,
+            shortDescription: 'SKU: COKVMR1KG',
+            tags: 'Aromatic, Traditional, Kerala Cuisine',
+            longDescription: 'Authentic Taste of Kerala in Every Grain\nChaitva Organic’s Kerala Vadi Mattai Rice is a fragrant, long-grained rice variety prized for its distinctive flavor and soft texture. Sourced directly from traditional farms, it’s the perfect base for Kerala-style curries and festive meals.',
+            sensoryExperience: 'Breathe in the mild aroma and relish the fluffy, tender grains. A staple for occasions and everyday cooking alike.',
+            image: 'kerala-rice.jpeg',
+            category: 'rice',
+            keywords: [
+                'Traditional Grains',
+                'Organic Staples',
+                'South Indian Specialties',
+                'Aromatic',
+                'Traditional',
+                'Kerala Cuisine'
+            ]
+        },
+        {
+            id: '5',
+            name: 'Pepper(100 Grams)',
+            price: 168,
+            sku: 'COBP100GM',
+            currency: 'INR',
+            rating: 5.0,
+            reviews: 40,
+            shortDescription: 'SKU: COBP100GM',
+            tags: 'Piperine, Aromatic, Sharp heat',
+            longDescription: 'The King of Spices\nChaitva Organic’s Black Pepper is bold, aromatic, and packed with piperine for immunity and digestion support. A must-have spice in every kitchen.',
+            sensoryExperience: 'Pungent aroma with a sharp, spicy kick. Ideal for seasoning dishes and enhancing flavor.',
+            image: 'black-pepper.jpeg',
+            category: 'spices',
+            keywords: [
+                'Spices',
+                'Immunity Boosters',
+                'Everyday Essentials',
+                'Piperine',
+                'Aromatic',
+                'Sharp heat'
+            ]
+        },
+        {
+            id: '6',
+            name: 'Cumin (100 Grams)',
+            price: 95,
+            sku: 'COCS100GM',
+            currency: 'INR',
+            rating: 4.8,
+            reviews: 26,
+            shortDescription: 'SKU: COCS100GM',
+            tags: 'Aromatic, Cooling, Digestive',
+            longDescription: 'Aromatic Seeds for Flavor & Wellness\nChaitva Organic’s Cumin Seeds are farm-fresh and naturally aromatic. Known for their digestive benefits, they add warmth and earthy flavor to Indian cooking.',
+            sensoryExperience: 'Nutty, peppery aroma with a sharp taste. Best for tempering curries, dals, or spiced rice.',
+            image: 'cumin.jpeg',
+            category: 'spices',
+            keywords: [
+                'Spices',
+                'Kitchen Essentials',
+                'Digestive Aids',
+                'Aromatic',
+                'Cooling',
+                'Digestive'
+            ]
+        },
+        {
+            id: '7',
+            name: 'Turmeric (200 Grams)',
+            price: 189,
+            sku: 'COTP200GM',
+            currency: 'INR',
+            rating: 5.0,
+            reviews: 41,
+            shortDescription: 'SKU: COTP200GM',
+            tags: 'Curcumin, Golden spice, Healing',
+            longDescription: 'The Golden Healer of Every Kitchen\nChaitva Organic’s Turmeric Powder is pure, potent, and loaded with curcumin. It strengthens immunity, reduces inflammation, and adds vibrant flavor to your dishes.',
+            sensoryExperience: 'Bright yellow color with a warm, earthy aroma. Enhances curries, lattes, and everyday cooking',
+            image: 'Turmeric.jpeg',
+            category: 'spices',
+            keywords: [
+                'Spices',
+                'Ayurvedic Essentials',
+                'Immunity Boosters',
+                'Curcumin',
+                'Golden spice',
+                'Healing'
+            ]
+        },
+        {
+            id: '8',
+            name: 'Coriander (100 Grams)',
+            price: 84,
+            sku: 'COCORS100GM',
+            currency: 'INR',
+            rating: 4.7,
+            reviews: 21,
+            shortDescription: 'SKU: COCORS100GM',
+            tags: 'Fragrant, Cooling, Detox',
+            longDescription: 'Fragrant & Flavorful Kitchen Staple\nChaitva Organic’s Coriander Seeds are sun-dried for maximum aroma and flavor. Known to aid digestion and detox, they are a must-have spice for daily cooking.',
+            sensoryExperience: 'Citrusy, sweet aroma with a mild taste. Ideal for spice blends, curries, and pickles.',
+            image: 'corriander.jpeg',
+            category: 'spices',
+            keywords: [
+                'Spices',
+                'Everyday Essentials',
+                'Cooling Herbs',
+                'Fragrant',
+                'Cooling',
+                'Detox'
+            ]
+        },
+        {
+            id: '9',
+            name: 'Cinnamon (100 Grams)',
+            price: 95,
+            sku: 'COCIN100GM',
+            currency: 'INR',
+            rating: 5.0,
+            reviews: 31,
+            shortDescription: 'SKU: COCIN100GM',
+            tags: 'Sweet spice, Aromatic, Warmth',
+            longDescription: 'The Sweet Spice of Comfort\nChaitva Organic’s Cinnamon Sticks are pure, fragrant, and full of natural oils. A versatile spice that enhances both sweet and savory dishes.',
+            sensoryExperience: 'Sweet, woody aroma with a warm flavor. Perfect for curries, teas, and desserts.',
+            image: 'cinnamon.jpeg',
+            category: 'spices',
+            keywords: [
+                'Spices',
+                'Ayurvedic Essentials',
+                'Baking Must-Haves',
+                'Sweet spice',
+                'Aromatic',
+                'Warmth'
+            ]
+        },
+        {
+            id: '10',
+            name: 'Chilli Flakes (200 Grams)',
+            price: 189,
+            sku: 'COCHF200GM',
+            currency: 'INR',
+            rating: 4.8,
+            reviews: 24,
+            shortDescription: 'SKU: COCHF200GM',
+            tags: 'Spicy, Zesty, Fiery flavor',
+            longDescription: 'Add a Kick to Every Dish\nChaitva Organic’s Chilli Flakes are sun-dried, crushed, and packed to perfection. A sprinkle elevates pizzas, pastas, and curries with fiery zest.',
+            sensoryExperience: 'Aromatic, sharp heat that lingers on the palate. Perfect for seasoning or garnishing.',
+            image: 'chill-fkakes.jpeg',
+            category: 'spices',
+            keywords: [
+                'Spices',
+                'Kitchen Essentials',
+                'Flavor Enhancers',
+                'Spicy',
+                'Zesty',
+                'Fiery flavor'
+            ]
+        },
+        {
+            id: '11',
+            name: 'Coffee Mix (200 Grams)',
+            price: 419,
+            sku: 'COCP200GM',
+            currency: 'INR',
+            rating: 5.0,
+            reviews: 44,
+            shortDescription: 'SKU: COCP200GM',
+            tags: 'Aromatic, Strong brew, Energy booster',
+            longDescription: 'Awaken with Every Sip\nChaitva Organic’s Coffee Powder is made from premium beans roasted to perfection. It delivers an intense aroma and rich flavor that energizes your mornings.',
+            sensoryExperience: 'Strong, earthy aroma with a smooth finish. Perfect for filter coffee or black coffee lovers.',
+            image: 'coffee-powder.jpeg',
+            category: 'beverages',
+            keywords: [
+                'Beverages',
+                'Morning Essentials',
+                'Energizers',
+                'Aromatic',
+                'Strong brew',
+                'Energy booster'
+            ]
+        },
+        {
+            id: '12',
+            name: 'Tea Mix (200 Grams)',
+            price: 209,
+            sku: 'COTP200GM',
+            currency: 'INR',
+            rating: 4.9,
+            reviews: 37,
+            shortDescription: 'SKU: COTP200GM',
+            tags: 'Aromatic, Energy, Morning ritual',
+            longDescription: 'Start Your Day with Rich Aroma & Energy\nChaitva Organic’s Tea Powder is carefully processed to preserve natural flavor and aroma. Brew a strong, refreshing cup that awakens your senses.',
+            sensoryExperience: 'Bold aroma with a smooth, full-bodied taste. Best enjoyed with milk or as a spiced chai.',
+            image: 'Tea-powder.jpeg',
+            category: 'beverages',
+            keywords: [
+                'Beverages',
+                'Everyday Essentials',
+                'Refreshments',
+                'Aromatic',
+                'Energy',
+                'Morning ritual'
+            ]
+        },
+        {
+            id: '13',
+            name: 'Little Millet (500 Grams)',
+            price: 110,
+            sku: 'COLM500GM',
+            currency: 'INR',
+            rating: 4.9,
+            reviews: 35,
+            shortDescription: 'SKU: COLM500GM',
+            tags: 'Diabetic-friendly, Protein-rich, Light grain',
+            longDescription: 'The Perfect Light & Nutritious Millet\nChaitva Organic’s Little Millet is a light, easy-to-digest grain, perfect for weight management and diabetic-friendly diets. Rich in B-vitamins and minerals, it helps boost energy and supports overall wellness.',
+            sensoryExperience: 'Soft texture and mild flavor make it ideal for porridge, upma, or rice alternatives in everyday meals.',
+            image: 'Little-millet.jpeg',
+            category: 'millets',
+            keywords: [
+                'Millets',
+                'Gluten-Free Staples',
+                'Healthy Eating',
+                'Superfoods',
+                'Diabetic-friendly',
+                'Protein-rich',
+                'Light grain'
+            ]
+        },
+        {
+            id: '14',
+            name: 'Kodo Millet (500 Grams)',
+            price: 120,
+            sku: null,
+            currency: 'INR',
+            rating: 4.7,
+            reviews: 28,
+            shortDescription: 'SKU: KOM500GM',
+            tags: 'Low glycemic, Ancient grain, Wholesome',
+            longDescription: '\n₹80.00\n\nRated 4.7 out of 5\n28 reviews\n\nA Time-Tested Super Grain\nChaitva Organic’s Foxtail Millet is a low-glycemic grain rich in iron and calcium, perfect for heart health and diabetes management. Its versatility makes it a smart choice for modern kitchens rooted in tradition.',
+            sensoryExperience: 'Nutty taste with a light, fluffy texture when cooked. Ideal for dosas, pulao, or as a healthy rice substitute.',
+            image: 'prod-6.jpeg',
+            category: 'millets',
+            keywords: [
+                'Millets',
+                'Gluten-Free Staples',
+                'Healthy Eating',
+                'Superfoods',
+                'Diabetic-friendly',
+                'Protein-rich',
+                'Light grain'
+            ]
+        },
+        {
+            id: '14',
+            name: 'Foxtail Millet (500 Grams)',
+            price: 80,
+            sku: 'COFM500GM',
+            currency: 'INR',
+            rating: 4.7,
+            reviews: 28,
+            shortDescription: 'SKU: COFM500GM',
+            tags: 'Low glycemic, Ancient grain, Wholesome',
+            longDescription: 'A Time-Tested Super Grain\nChaitva Organic’s Foxtail Millet is a low-glycemic grain rich in iron and calcium, perfect for heart health and diabetes management. Its versatility makes it a smart choice for modern kitchens rooted in tradition.',
+            sensoryExperience: 'Nutty taste with a light, fluffy texture when cooked. Ideal for dosas, pulao, or as a healthy rice substitute.',
+            image: 'foxtail.jpeg',
+            category: 'millets',
+            keywords: [
+                'Millets',
+                'Gluten-Free Grains',
+                'Superfoods',
+                'Everyday Wellness',
+                'Low glycemic',
+                'Ancient grain',
+                'Wholesome'
+            ]
+        },
+        {
+            id: '15',
+            name: 'Barnyard Millet (500 Grams)',
+            price: 120,
+            sku: 'COBYM500GM',
+            currency: 'INR',
+            rating: 4.8,
+            reviews: 21,
+            shortDescription: 'SKU: COBYM500GM',
+            tags: 'Detox, Gluten-free, High energy',
+            longDescription: 'Cleanse and Energize with Nature’s Millet\nBarnyard Millet from Chaitva Organics is rich in fiber and iron, making it ideal for detox diets and fasting meals. It balances digestion while providing a steady source of energy.',
+            sensoryExperience: 'Light, fluffy, and mildly sweet when cooked. Perfect for khichdi, pongal, or porridge.',
+            image: 'barnyard-millet.jpeg',
+            category: 'millets',
+            keywords: [
+                'Millets',
+                'High-Fiber Foods',
+                'Fasting-Friendly',
+                'Superfoods',
+                'Detox',
+                'Gluten-free',
+                'High energy'
+            ]
+        },
+        {
+            id: '16',
+            name: 'Lip Balm - Strawberry(5 Grams)',
+            price: 166,
+            sku: 'COSLB5',
+            currency: 'INR',
+            rating: 4.8,
+            reviews: 19,
+            shortDescription: 'SKU: COSLB5',
+            tags: 'Portable, Fruity, Nourishing',
+            longDescription: 'Pocket-Friendly Lip Protection\nSame nourishing strawberry formula in a smaller, travel-friendly pack. Keeps lips soft and hydrated wherever you go.',
+            sensoryExperience: 'Light, fruity scent with a smooth glide. Perfect for daily use.',
+            image: 'prod-13.jpeg',
+            category: 'personal',
+            keywords: [
+                'Lip Care',
+                'Skincare',
+                'Natural Balms',
+                'Portable',
+                'Fruity',
+                'Nourishing'
+            ]
+        },
+        {
+            id: '16',
+            name: 'Lip Balm - Strawberry(10 Grams)',
+            price: 259,
+            sku: 'COSLB10',
+            currency: 'INR',
+            rating: 4.9,
+            reviews: 27,
+            shortDescription: 'SKU: COSLB10',
+            tags: 'Moisturizing, Fruity, Protective',
+            longDescription: 'Sweet Care for Your Lips\nEnriched with natural butters and strawberry essence, this lip balm locks in moisture and prevents chapping.',
+            sensoryExperience: 'Fruity aroma with a soft, buttery texture. Leaves lips smooth and lightly glossy.',
+            image: 'prod-13.jpeg',
+            category: 'personal',
+            keywords: [
+                'Lip Care',
+                'Skincare',
+                'Natural Balms',
+                'Moisturizing',
+                'Fruity',
+                'Protective'
+            ]
+        },
+        {
+            id: '17',
+            name: 'Lip Balm - Beetroot(5 Grams)',
+            price: 166,
+            sku: 'COBLB5',
+            currency: 'INR',
+            rating: 4.9,
+            reviews: 22,
+            shortDescription: 'SKU: COBLB5',
+            tags: 'Natural tint, Hydrating, Herbal',
+            longDescription: 'Tinted Care with Beetroot Goodness\nThis lip balm blends beetroot extract with natural butters to hydrate and add a subtle rosy tint.',
+            sensoryExperience: 'Creamy texture with a light earthy-sweet scent. Leaves lips soft with a natural flush of color.',
+            image: 'lpbalm-beetroot.jpeg',
+            category: 'personal',
+            keywords: [
+                'Lip Care',
+                'Skincare',
+                'Natural Balms',
+                'Natural tint',
+                'Hydrating',
+                'Herbal'
+            ]
+        },
+        {
+            id: '18',
+            name: 'Loofah',
+            price: 55,
+            sku: 'COLOO',
+            currency: 'INR',
+            rating: 4.7,
+            reviews: 20,
+            shortDescription: 'SKU: COLOO',
+            tags: 'Exfoliating, Natural fiber, Sustainable',
+            longDescription: 'Natural Exfoliation for Radiant Skin\nChaitva Organic’s Loofah is made from natural plant fibers. It gently exfoliates, removes dead skin, and stimulates circulation for glowing skin.',
+            sensoryExperience: 'Slightly coarse texture that softens when wet. Leaves skin smooth and refreshed.',
+            image: 'loofah.jpeg',
+            category: 'personal',
+            keywords: [
+                'Personal Care',
+                'Bath Essentials',
+                'Eco-Friendly',
+                'Exfoliating',
+                'Natural fiber',
+                'Sustainable'
+            ]
+        },
+        {
+            id: '19',
+            name: 'Bamboo Tooth Brush',
+            price: 58,
+            sku: 'COTBNEEM',
+            currency: 'INR',
+            rating: 4.6,
+            reviews: 18,
+            shortDescription: 'SKU: COTBNEEM',
+            tags: 'Natural, Sustainable, Herbal care',
+            longDescription: 'Gentle Oral Care the Natural Way\nChaitva Organic’s Neem Toothbrush is eco-friendly and naturally antibacterial. It supports oral hygiene without harsh chemicals or plastics.',
+            sensoryExperience: 'Soft bristles with a refreshing herbal feel, leaving your mouth clean and fresh.',
+            image: 'prod-8.jpeg',
+            category: 'personal',
+            keywords: [
+                'Personal Care',
+                'Oral Care',
+                'Eco-Friendly',
+                'Natural',
+                'Sustainable',
+                'Herbal care'
+            ]
+        },
+        {
+            id: '20',
+            name: 'Pocket Comb',
+            price: 63,
+            sku: 'COPNC',
+            currency: 'INR',
+            rating: 4.8,
+            reviews: 19,
+            shortDescription: 'SKU: COPNC',
+            tags: 'Portable, Herbal, Anti-static',
+            longDescription: 'Neem Protection On-the-Go\nA compact neem comb designed for travel. Provides the same scalp-friendly, anti-dandruff benefits of neem in a portable size.',
+            sensoryExperience: 'Lightweight, smooth, and easy to carry. Keeps your hair tangle-free naturally.',
+            image: 'pocket-comb.jpeg',
+            category: 'personal',
+            keywords: [
+                'Personal Care',
+                'Hair Tools',
+                'Travel-Friendly',
+                'Portable',
+                'Herbal',
+                'Anti-static'
+            ]
+        },
+        {
+            id: '21',
+            name: 'Ayurvedic Hair Oil Mix ',
+            price: 189,
+            sku: 'COAHO',
+            currency: 'INR',
+            rating: 4.8,
+            reviews: 30,
+            shortDescription: 'SKU: COAHO',
+            tags: 'Ayurvedic, Hair growth, Strengthening',
+            longDescription: 'Strengthen & Restore with Ayurveda\nThis Ayurvedic Hair Oil Mix is a potent blend of traditional herbs and oils that nourish the scalp, reduce hair fall, and promote regrowth.',
+            sensoryExperience: 'Light, earthy aroma with a cooling sensation. Absorbs well, leaving hair strong and glossy.',
+            image: 'prod-2.jpeg',
+            category: 'personal',
+            keywords: [
+                'Hair Care',
+                'Oils',
+                'Traditional Remedies',
+                'Ayurvedic',
+                'Hair growth',
+                'Strengthening'
+            ]
+        },
+        {
+            id: '22',
+            name: 'Eucalyptus Oil ',
+            price: 267,
+            sku: 'COEO',
+            currency: 'INR',
+            rating: 5.0,
+            reviews: 33,
+            shortDescription: 'SKU: COEO',
+            tags: 'Soothing, Anti-inflammatory, Healing',
+            longDescription: 'Nature’s Breathe-Easy Oil\nChaitva Organic’s Eucalyptus Oil is pure and potent, ideal for aromatherapy, cold relief, and muscle relaxation. Known for its cooling, soothing properties.',
+            sensoryExperience: 'Strong, refreshing aroma with a cooling sensation. Perfect for steam inhalation, massage, or diffuser use.',
+            image: 'prod-6.jpeg',
+            category: 'personal',
+            keywords: [
+                'Essential Oils',
+                'Wellness',
+                'Aromatherapy',
+                'Soothing',
+                'Anti-inflammatory',
+                'Healing'
+            ]
+        },
+        {
+            id: '23',
+            name: 'Organic Soap (Natural Sandalwood)',
+            price: 107,
+            sku: 'COSWS',
+            currency: 'INR',
+            rating: 4.9,
+            reviews: 29,
+            shortDescription: 'SKU: COSWS',
+            tags: 'Aromatic, Calming, Traditional care',
+            longDescription: 'The Essence of Calm & Tradition\nChaitva Organic’s Sandalwood Soap is infused with pure sandalwood oil for a calming, aromatic bathing experience. It nourishes skin while leaving a lingering fragrance.',
+            sensoryExperience: 'Rich aroma with creamy lather. Promotes relaxation and leaves skin silky smooth.',
+            image: 'sandlewood.jpeg',
+            category: 'personal',
+            keywords: [
+                'Personal Care',
+                'Herbal Soaps',
+                'Skincare',
+                'Aromatic',
+                'Calming',
+                'Traditional care'
+            ]
+        },
+        {
+            id: '24',
+            name: 'Organic Soap (Natural Aloevera)',
+            price: 107,
+            sku: 'COAVS',
+            currency: 'INR',
+            rating: 4.8,
+            reviews: 25,
+            shortDescription: 'SKU: COAVS',
+            tags: 'Moisturizing, Cooling, Gentle care',
+            longDescription: 'Gentle Nourishment with Aloe Goodness\nChaitva Organic’s Aloe Vera Soap hydrates, soothes, and refreshes your skin. Enriched with aloe extracts for everyday gentle care.',
+            sensoryExperience: 'Soft lather with a cooling feel. Leaves your skin refreshed, smooth, and moisturized.',
+            image: 'prod-10.jpeg',
+            category: 'personal',
+            keywords: [
+                'Personal Care',
+                'Herbal Soaps',
+                'Skincare',
+                'Moisturizing',
+                'Cooling',
+                'Gentle care'
+            ]
+        },
+        {
+            id: '25',
+            name: 'Herbal Shampoo (100 ML)',
+            price: 353,
+            sku: 'COHS',
+            currency: 'INR',
+            rating: 4.7,
+            reviews: 38,
+            shortDescription: 'SKU: COHS',
+            tags: 'Anti-hair fall, Natural shine, Herbal',
+            longDescription: 'Nature’s Answer to Healthy Hair\nChaitva Organic’s Herbal Shampoo is enriched with natural extracts that reduce hair fall, cleanse gently, and restore natural shine.',
+            sensoryExperience: 'Foams softly with a refreshing herbal aroma. Leaves hair soft, bouncy, and fresh.',
+            image: 'prod-11.jpeg',
+            category: 'personal',
+            keywords: [
+                'Hair Care',
+                'Herbal Blends',
+                'Everyday Essentials',
+                'Anti-hair fall',
+                'Natural shine',
+                'Herbal'
+            ]
+        },
+        {
+            id: '26',
+            name: 'Dual Bristled Neem Comb',
+            price: 126,
+            sku: 'CODNC',
+            currency: 'INR',
+            rating: 4.9,
+            reviews: 27,
+            shortDescription: 'SKU: CODNC',
+            tags: 'Anti-dandruff, Scalp health, Sustainable',
+            longDescription: 'Healthy Hair with Neem Care\nCrafted from neem wood, this dual-bristled comb prevents dandruff, promotes scalp circulation, and reduces static. A natural alternative to plastic combs.',
+            sensoryExperience: 'Smooth finish with a calming herbal scent. Glides gently through hair without breakage.',
+            image: 'prod-14.jpeg',
+            category: 'personal',
+            keywords: [
+                'Personal Care',
+                'Hair Tools',
+                'Eco-Friendly',
+                'Anti-dandruff',
+                'Scalp health',
+                'Sustainable'
+            ]
+        }
+    ]
+
+    constructor(private route: ActivatedRoute, private cartService: CartService,
+        private router: Router, private cdr: ChangeDetectorRef) { }
+
+    ngOnInit() {
+        this.productId = this.route.snapshot.paramMap.get('id')!;
+        this.product = this.products.find(p => p.id === this.productId);
+        this.galleryImages = this.product?.image ? [this.product.image] : [];
+        this.cartService.cartItems$.subscribe(items => {
+            this.cartItems = items;
+        });
+    }
+
+
+    increment() {
+        this.quantity++;
+    }
+
+    decrement() {
+        if (this.quantity > 1) this.quantity--;
+    }
+
+    addToCart() {
+        const itemWithQuantity = { ...this.product, quantity: this.quantity };
+        this.cartService.addToCart(itemWithQuantity);
+        this.showAdded = true;
+        setTimeout(() => {
+            this.showAdded = false;
+            this.cdr.detectChanges();
+        }, 1000);
+    }
+    isInCart(productId: string): boolean {
+        return this.cartItems.some(item => item.id === productId);
+    }
+    getStarArray(rating: number): number[] {
+        return [1, 2, 3, 4, 5];
+    }
+
+    // Returns if full star should be shown
+    isFullStar(star: number, rating: number): boolean {
+        return star <= Math.floor(rating);
+    }
+
+    // Returns if half star should be shown
+    isHalfStar(star: number, rating: number): boolean {
+        return star > Math.floor(rating) && star - 1 < rating;
+    }
+
+    // Returns if empty star should be shown
+    isEmptyStar(star: number, rating: number): boolean {
+        return star > rating;
+    }
+
+    onImageLoad() {
+        if (this.imageLoadTimeout) {
+            clearTimeout(this.imageLoadTimeout);
+            this.imageLoadTimeout = null;
+        }
+        this.imageLoaded = true;
+        this.cdr.detectChanges();
+    }
+
+    selectImage(i: number) {
+        // reset loading state and switch image
+        this.selectedIndex = i;
+        this.imageLoaded = false;
+        this.cdr.detectChanges();
+
+        // failsafe: if the browser doesn't fire load (e.g., cached edge cases), end the loader
+        if (this.imageLoadTimeout) {
+            clearTimeout(this.imageLoadTimeout);
+        }
+        this.imageLoadTimeout = setTimeout(() => {
+            if (!this.imageLoaded) {
+                // assume success and end skeleton to prevent indefinite loading
+                this.imageLoaded = true;
+                this.cdr.detectChanges();
+            }
+        }, 2000);
+    }
+
+    get currentImage(): string {
+        return this.galleryImages?.[this.selectedIndex] ?? this.product?.image;
+    }
+
+    openZoom() { this.zoomOpen = true; }
+    closeZoom() { this.zoomOpen = false; }
+    toggleZoom() { this.zoomOpen = !this.zoomOpen; }
+
+    onImageError() {
+        // Fallback: revert to primary product image and end loader
+        if (this.product?.image) {
+            // ensure main image is first or switch to it
+            const idx = this.galleryImages.findIndex(g => g === this.product.image);
+            if (idx >= 0) {
+                this.selectedIndex = idx;
+            } else {
+                this.selectedIndex = 0;
+            }
+        } else {
+            this.selectedIndex = 0;
+        }
+        if (this.imageLoadTimeout) {
+            clearTimeout(this.imageLoadTimeout);
+            this.imageLoadTimeout = null;
+        }
+        this.imageLoaded = true;
+        this.cdr.detectChanges();
+    }
+
+}

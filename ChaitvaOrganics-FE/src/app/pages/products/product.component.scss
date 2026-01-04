@@ -1,0 +1,240 @@
+/* Category Buttons (chip-like with ripple) */
+.category-btn {
+  border: 2px solid var(--primary, #198754);
+  color: var(--primary, #198754);
+  border-radius: 999px;
+  font-weight: 700;
+  padding: 8px 16px;
+  transition: all 0.25s ease;
+  position: relative;
+  overflow: hidden;
+  -webkit-tap-highlight-color: transparent;
+
+  &:hover {
+    background-color: var(--primary, #198754);
+    color: #fff;
+    box-shadow: 0 8px 22px rgba(46, 125, 50, 0.25);
+    transform: translateY(-1px);
+  }
+
+  &.active {
+    background-color: var(--primary, #198754);
+    color: #fff;
+    box-shadow: 0 8px 22px rgba(46, 125, 50, 0.25);
+  }
+
+  /* Ripple */
+  &::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 0;
+    height: 0;
+    background: rgba(46, 125, 50, 0.15);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    opacity: 0;
+  }
+  &:active::after {
+    width: 220%;
+    height: 220%;
+    opacity: 1;
+    transition: width 0.45s ease, height 0.45s ease, opacity 0.6s ease;
+  }
+}
+
+/* Product Card */
+.product-item {
+  position: relative; /* for .stretched-link overlay */
+  background: #fff;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 2px 10px rgba(16, 24, 40, 0.08);
+  text-align: center;
+  padding: 12px;
+  will-change: transform, box-shadow;
+  transform: translateZ(0);
+  transition: transform 220ms ease, box-shadow 220ms ease;
+
+  &:hover {
+    transform: translateY(-8px) scale(1.01);
+    box-shadow: 0 10px 26px rgba(16, 24, 40, 0.14);
+  }
+
+  .position-relative {
+    overflow: hidden;
+    border-radius: 12px;
+    background: #f8faf9;
+    aspect-ratio: 1 / 1; /* maintain square container to match intrinsic image ratio */
+  }
+
+  img {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1 / 1; /* match intrinsic aspect ratio to avoid NG02952 */
+    max-width: 100%;
+    object-fit: contain;
+    margin: 0 auto;
+    display: block;
+    will-change: transform;
+    transition: transform 320ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  &:hover img {
+    transform: translateY(-4px) scale(1.04);
+  }
+}
+
+/* New badge with subtle pop on first paint */
+.badge-new {
+  background: linear-gradient(90deg, var(--accent, #ff8a00), #ffc56d);
+  color: #2e1c00;
+  font-weight: 800;
+  padding: 4px 12px;
+  border-radius: 999px;
+  position: absolute;
+  top: 10px;
+  left: 12px;
+  font-size: 0.75rem;
+  border: 1px solid #ffd9a1;
+  animation: badgePop 600ms ease-out 150ms both;
+}
+@keyframes badgePop {
+  0% { transform: scale(0.8); opacity: 0; }
+  60% { transform: scale(1.08); opacity: 1; }
+  100% { transform: scale(1); }
+}
+
+/* Cart Button (kept if enabled) */
+.add-to-cart-btn {
+  background-color: var(--accent, #ff914d);
+  color: #2e1c00;
+  border: 1px solid #ffd9a1;
+  padding: 10px 18px;
+  border-radius: 25px;
+  font-weight: 700;
+  font-size: 14px;
+  cursor: pointer;
+  transition: transform 0.15s ease, background-color 0.25s ease, box-shadow 0.25s ease;
+  width: 100%;
+  text-align: center;
+  box-shadow: 0 10px 26px rgba(255, 138, 0, 0.2);
+
+  &:hover:not(:disabled) {
+    transform: translateY(-1px);
+    background-color: #ffa040;
+  }
+
+  &:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+  }
+}
+
+.cart-section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Ensure whole-card click works even without Bootstrap's stretched-link */
+.product-item .stretched-link {
+  position: absolute;
+  inset: 0;
+  z-index: 3; /* ensure overlay is above inner content so the whole card is clickable */
+}
+/* Keep inner content above the stretched link when needed */
+.product-item .position-relative,
+.product-item .badge-new,
+.product-item .text-center {
+  position: relative; /* no z-index so overlay link can capture clicks */
+}
+
+/* Sticky filters/sort bar */
+.filters-bar {
+  position: sticky;
+  top: var(--stickyTop, 72px);
+  background: color-mix(in srgb, #ffffff 86%, transparent);
+  backdrop-filter: blur(6px);
+  border: 1px solid var(--border, #e6e8ee);
+  border-radius: 12px;
+  padding: 8px 12px;
+  box-shadow: 0 6px 20px rgba(16, 24, 40, 0.06);
+  gap: 10px;
+
+  .sort-select {
+    min-width: 170px;
+  }
+}
+
+/* Actions reveal (hover/focus) */
+.actions {
+  position: relative;
+  z-index: 4; /* above stretched-link (z=3) */
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 200ms ease, transform 200ms ease;
+}
+.product-item:hover .actions,
+.product-item:focus-within .actions {
+  opacity: 1;
+  transform: none;
+}
+
+/* Focus rings for a11y */
+.category-btn:focus-visible,
+.add-to-cart-btn:focus-visible {
+  outline: 3px solid color-mix(in srgb, var(--primary, #198754) 70%, #ffffff 0%);
+  outline-offset: 2px;
+}
+
+/* Skeleton loader (reused from detail page, locally scoped) */
+.image-shell {
+  position: relative;
+  overflow: hidden;
+  border-radius: 12px;
+  aspect-ratio: 1 / 1;
+  background: #f8faf9;
+}
+.image-shell.is-loading { background: #f2f4f7; }
+.image-shell .skeleton {
+  position: absolute;
+  inset: 0;
+  border-radius: 12px;
+  background: linear-gradient(90deg, #f2f4f7 0%, #e9edf2 35%, #f2f4f7 65%);
+  background-size: 200% 100%;
+  animation: shimmer 1.2s ease-in-out infinite;
+}
+.product-img {
+  opacity: 0;
+  transition: opacity 260ms ease;
+}
+.product-img.visible {
+  opacity: 1;
+}
+.skeleton-line {
+  height: 10px;
+  border-radius: 8px;
+  background: linear-gradient(90deg, #f2f4f7 0%, #e9edf2 35%, #f2f4f7 65%);
+  background-size: 200% 100%;
+  animation: shimmer 1.2s ease-in-out infinite;
+}
+@keyframes shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* Reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  .product-item,
+  .product-item img,
+  .category-btn,
+  .actions,
+  .add-to-cart-btn,
+  .image-shell .skeleton,
+  .skeleton-line {
+    transition: none !important;
+    animation: none !important;
+  }
+}

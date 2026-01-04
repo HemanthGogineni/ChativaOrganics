@@ -1,0 +1,82 @@
+<!-- Modals -->
+<div class="modal-backdrop" *ngIf="showModal">
+  <div class="modal-content surface rounded-xl p-4">
+    <h3 class="mb-2">Payment Instructions</h3>
+    <p class="mb-3">Please upload transaction screenshot below and submit. Only then your payment gets completed.</p>
+    <button class="close-btn btn btn-primary" (click)="closeModal()">Continue</button>
+  </div>
+</div>
+
+<div class="modal-backdrop" *ngIf="noTransactionUploaded">
+  <div class="modal-content surface rounded-xl p-4">
+    <h3 class="mb-2">Alert!</h3>
+    <p class="mb-3">Please upload a transaction screenshot before placing the order.</p>
+    <button class="close-trans-btn btn btn-primary" (click)="closeTransactionModal()">Upload</button>
+  </div>
+</div>
+
+<!-- Page -->
+<div class="container-xxl py-6">
+  <div class="container">
+    <div class="section-header text-center mx-auto mb-5" style="max-width: 600px;">
+      <h2 class="mb-3">Complete Your Payment</h2>
+      <p class="text-muted-2">Scan the QR or use any UPI app below to make payment, then upload your transaction screenshot.</p>
+    </div>
+
+    <div class="row g-4 justify-content-center">
+      <!-- QR + OR -->
+      <div class="col-12 d-flex flex-column align-items-center">
+        <div class="surface rounded-xl p-4 mb-3">
+          <div class="qr-section">
+            <ng-container *ngIf="qrImageBase64; else loading">
+              <img [src]="qrImageBase64" alt="QR Code" />
+            </ng-container>
+          </div>
+        </div>
+
+        <div class="or-divider my-2">
+          <span>OR</span>
+        </div>
+      </div>
+
+      <!-- UPI Cards -->
+      <div class="col-12 d-flex justify-content-center">
+        <ng-container *ngIf="paymentLinks.default; else loading">
+          <div class="upi-grid">
+            <a [href]="paymentLinks.default" target="_blank" class="upi-card default">
+              <img src="/assets/img/upi.svg" alt="UPI" class="upi-icon" />
+              <span>UPI</span>
+            </a>
+            <a [href]="paymentLinks.phonepe" target="_blank" class="upi-card phonepe">
+              <img src="/assets/img/phonepay.svg" alt="PhonePe" class="upi-icon" />
+              <span>PhonePe</span>
+            </a>
+            <a [href]="paymentLinks.gpay" target="_blank" class="upi-card gpay">
+              <img src="/assets/img/gpay.svg" alt="Google Pay" class="upi-icon" />
+              <span>Google Pay</span>
+            </a>
+            <a [href]="paymentLinks.paytm" target="_blank" class="upi-card paytm">
+              <img src="/assets/img/paytm.svg" alt="Paytm" class="upi-icon" />
+              <span>Paytm</span>
+            </a>
+          </div>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Loading Template -->
+<ng-template #loading>
+  <p class="text-center text-muted-2">Loading payment options...</p>
+</ng-template>
+
+<!-- Upload Section -->
+<div class="upload-section surface rounded-xl">
+  <label for="screenshotUpload" class="mb-2">Upload Payment Screenshot:</label>
+  <input type="file" id="screenshotUpload" (change)="onFileSelected($event)" />
+
+  <button class="btn btn-primary mt-2 w-100" (click)="finalOrder()" [disabled]="isSubmitting">
+    {{ isSubmitting ? 'Submitting...' : 'Submit' }}
+  </button>
+</div>

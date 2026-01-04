@@ -1,0 +1,134 @@
+<!-- Products Page -->
+<div class="container-xxl py-6">
+  <div class="container">
+
+    <!-- Header + Category Chips -->
+    <div class="row g-0 gx-5 align-items-end">
+      <div class="col-lg-6">
+        <div class="section-header text-start mb-5" style="max-width: 560px;">
+          <h2 class="mb-3">Our Products</h2>
+          <p class="text-muted-2">
+            Discover our curated collection of organic products designed to nourish your body and uplift your lifestyle.
+            From millets and spices to rice and grains — everything we offer is clean, chemical-free, and grown the natural way.
+          </p>
+        </div>
+      </div>
+      <div class="col-lg-6 text-start text-lg-end mb-4">
+        <div class="filters-bar d-inline-flex flex-wrap gap-2 align-items-center justify-content-lg-end justify-content-start">
+          <label class="visually-hidden" for="sortSelect">Sort</label>
+          <select
+            id="sortSelect"
+            class="form-select form-select-sm sort-select"
+            [(ngModel)]="sortBy"
+            aria-label="Sort products by">
+            <option value="popularity">Sort: Popularity</option>
+            <option value="priceAsc">Price: Low to High</option>
+            <option value="priceDesc">Price: High to Low</option>
+            <option value="rating">Rating</option>
+          </select>
+
+          <div class="chips d-flex flex-wrap gap-2">
+            <button
+              class="category-btn chip"
+              *ngFor="let cat of categories"
+              [class.active]="selectedCategory === cat.id"
+              (click)="applyCategory(cat.id)">
+              {{ cat.name }}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Grid -->
+    <div class="tab-content">
+      <div class="tab-pane fade show p-0 active">
+
+        <ng-container *ngIf="showGridSkeleton; else realGrid">
+          <div class="row g-4">
+            <div class="col-xl-3 col-lg-4 col-md-6" *ngFor="let _ of skeletons">
+              <div class="product-item surface h-100 d-flex flex-column">
+                <div class="position-relative overflow-hidden rounded-3 image-shell is-loading" aria-busy="true">
+                  <div class="skeleton" aria-hidden="true"></div>
+                </div>
+                <div class="text-center p-3">
+                  <div class="skeleton-line w-75 mx-auto mb-2"></div>
+                  <div class="skeleton-line w-50 mx-auto"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+
+        <ng-template #realGrid>
+          <div class="row g-4" [@list]="selectedCategory + ':' + searchText + ':' + sortedProducts.length">
+            <div class="col-xl-3 col-lg-4 col-md-6" *ngFor="let product of sortedProducts; trackBy: trackByProductId">
+              <div class="product-item product-card surface h-100 d-flex flex-column"
+                   (mouseenter)="prefetchImage(product.image)"
+                   (mousedown)="goTo(product.id, $event)"
+                   (click)="goTo(product.id, $event)"
+                   tabindex="0"
+                   (keyup.enter)="goTo(product.id)">
+                <!-- Image -->
+                <div
+                  class="position-relative overflow-hidden rounded-3 image-shell"
+                  [class.is-loading]="!loadedImages.has(product.id)"
+                  [attr.aria-busy]="!loadedImages.has(product.id)">
+                  <div class="skeleton" *ngIf="!loadedImages.has(product.id)" aria-hidden="true"></div>
+                  <img
+                    [src]="'assets/img/product-imgs/' + product.image"
+                    [alt]="product.name"
+                    loading="lazy"
+                    decoding="async"
+                    (load)="onImageLoad(product.id)"
+                    [class.product-img]="true"
+                    [class.visible]="loadedImages.has(product.id)"
+                  />
+                  <div class="badge-new">New</div>
+                </div>
+
+                <!-- Info -->
+                <div class="text-center p-3">
+                  <div class="d-block h5 mb-1 product-title">{{ product.name }}</div>
+                  <div class="text-primary fw-bold">₹{{ product.price }}</div>
+                </div>
+
+                <!-- Actions -->
+                <div class="mt-auto w-100 p-3 actions">
+                  <button
+                    class="add-to-cart-btn w-100"
+                    [disabled]="isInCart(product.id)"
+                    (click)="onAddToCartClick($event, product)"
+                    attr.aria-label="Add {{ product.name }} to cart">
+                    <i class="fa fa-shopping-bag text-white me-2"></i>
+                    <span *ngIf="!isInCart(product.id)">Add to cart</span>
+                    <span *ngIf="isInCart(product.id)">Added</span>
+                  </button>
+                </div>
+
+                
+              </div>
+            </div>
+          </div>
+        </ng-template>
+
+      </div>
+    </div>
+
+    <!-- Visit CTA -->
+    <div class="surface rounded-xl shadow-sm-2 mt-5 p-4 p-md-5">
+      <div class="row g-4 align-items-center">
+        <div class="col-md-7">
+          <h3 class="mb-2">Visit Our Store</h3>
+          <p class="mb-0 text-muted-2">
+            See where purity meets tradition. Drop by our store and browse through our wide range of fresh, organic products — handpicked and proudly grown.
+          </p>
+        </div>
+        <div class="col-md-5 text-md-end">
+          <a routerLink="/contact-us" class="btn btn-light">Visit Now</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
